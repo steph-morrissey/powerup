@@ -3,7 +3,6 @@
 ## Team Members
 
 - Stephanie Morrissey
-- Stephanie Morrissey 3
-
 - Corey Clarke
-
+- Adnan Ghafoor
+Fixed glaring bug, computer speak
