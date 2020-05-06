@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://code.jquery.com/jquery-3.1.1.min.js"
+      integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+      crossorigin="anonymous"
+    ></script>
+    <title>Game Screen</title>
+  </head>
+  <body>
+    <h1>Universe</h1>
+
+    <script>
+      function getUniverse() {
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const universe = urlParams.get("universe");
+        return universe;
+      }
+      const universe = getUniverse();
+      console.log(universe);
+
+      function renderCharacters(data) {
+        console.log(data);
+      }
+
+      const ajaxOptions = {
+        url: "https://superheroapi.com/api/10222311384718653/100",
+        method: "GET",
+      };
+
+      $.ajax(ajaxOptions).then(renderCharacters);
+    </script>
+  </body>
+</html>
