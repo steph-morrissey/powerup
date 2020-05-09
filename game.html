@@ -33,78 +33,128 @@
         
     <script>
       const CORS_ANYWHERE_URL = "https://cors-anywhere.herokuapp.com/";
+      const SUPERHERO_URL = "https://superheroapi.com/api/10222311384718653/" 
+      const POKEMON_URL = "https://pokeapi.co/api/v2/pokemon/"
+
+      //Declaring 2 variables set to false
       let firstCharacterRendered = false;
       let secondCharacterRendered = false;
+
+      //Stores the universe in memory
+      const universe = getUniverse();
+
+      //Stores the random character ID into randomCharacterId's for a given universe
+      const randomCharacterId1 = getRandomCharacterNumber(universe)
+      const randomCharacterId2 = getRandomCharacterNumber(universe)
+
+      //Gets 2 random ID's
+      function getRandomCharacterNumber(universe){
+        let range
+        if(universe==="superhero"){
+          range=731
+        } else if(universe==="pokemon"){
+          range=800
+        } else {
+          //Handle the error if
+        }
+        const randomCharacterNumber = Math.floor(Math.random() * (range))
+        return randomCharacterNumber
+      }
+
+      //getUniverse gets universe set by the user and sets the queryString to that universe
       function getUniverse() {
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
         const universe = urlParams.get("universe");
+        //2 possible values pokemon or superhero
         return universe;
       }
-      const universe = getUniverse();
-      console.log(universe);
 
-      function renderFirstCharacter(data) {
-       const character1 = $("#character1")
-       const character1CardUpperDiv = $("<div>").addClass("ui card")
-       const character1ImageSecondDiv = $("<div>").addClass("image")
-       const character1Image = $("<img>").attr({
-         src: data.image.url,
-         alt: data.name
-       })
-       character1.append(character1CardUpperDiv.append(character1ImageSecondDiv.append(character1Image)))
-       firstCharacterRendered = true;
-       console.log('first data received')
-       checkBothRendered();
+      //Generates the superhero card
+      function generateSuperheroCard(data){
+        const character1CardUpperDiv = $("<div>").addClass("ui card")
+        const character1ImageSecondDiv = $("<div>").addClass("image")
+        const character1Image = $("<img>").attr({
+           src: data.image.url,
+           alt: data.name
+        })
+        return character1CardUpperDiv.append(character1ImageSecondDiv.append(character1Image))
       }
       
+      //Generates the pokemon card
+      function generatePokemonCard(data){
+        return "Pokemon Card"
+      }
+
+      //Renders the first character
+      function renderFirstCharacter(data) {
+        const character1 = $("#character1")
+        let card
+        if(universe === "superhero"){
+          card = generateSuperheroCard(data)
+        } else if (universe === "pokemon"){
+          card = generatePokemonCard(data)
+        }else {
+          //ERROR HANDLING
+        }
+        character1.append(card)
+        firstCharacterRendered = true;
+        console.log('first data received')
+        checkBothRendered();
+      }
+      
+      //Renders the second character
       function renderSecondCharacter(data){
         const character2 = $("#character2")
-        const character2CardUpperDiv = $("<div>").addClass("ui card")
-        const character2ImageSecondDiv = $("<div>").addClass("image")
-        const character2Image = $("<img>").attr({
-         src: data.image.url,
-         alt: data.name
-       })
-        character2.append(character2CardUpperDiv.append(character2ImageSecondDiv.append(character2Image)))
+        let card
+        if(universe === "superhero"){
+          card = generateSuperheroCard(data)
+        } else if (universe === "pokemon"){
+          card = generatePokemonCard(data)
+        }else {
+          //ERROR HANDLING
+        }
+        character2.append(card)
         secondCharacterRendered = true;
         console.log("second data received")
         checkBothRendered();
       }
+
+      //Checkes both Rendered
       function checkBothRendered() {
+        //If first 2 characters are rendered do something
         if (firstCharacterRendered && secondCharacterRendered){
           console.log('call function to render buttons')
-        const randomizeButton = $('<button>').addClass("ui primary basic button").text("RANDOMIZE AGAIN")
-        const startGameButton = $("<button>").addClass("ui primary basic button").text("START GAME")
-        $('#renderButtons').append(randomizeButton, startGameButton)
+          const randomizeButton = $('<button>').addClass("ui primary basic button").text("RANDOMIZE AGAIN")
+          const startGameButton = $("<button>").addClass("ui primary basic button").text("START GAME")
+          $('#renderButtons').append(randomizeButton, startGameButton)
         }
       }
       
-      const randomCharacterNumber = Math.floor(Math.random() * (731))
-      const randomCharacterNumber2 = Math.floor(Math.random() * (731))
+      //Generates the the ajax calls
+      function generateAjaxOptions(universe, randomCharacterId){
+        let url
+        if(universe==="superhero"){
+          url = SUPERHERO_URL
+        } else if (universe==="pokemon"){
+          url = POKEMON_URL
+        } else{
+          //ERROR HANDLING
+        }
+        console.log(url + randomCharacterId)
+        const ajaxOptions = {
+          url: CORS_ANYWHERE_URL + url + randomCharacterId,
+          method: "GET",
+          dataType: "json",
+          headers: {
+            "x-requested-with": "xhr",
+            },
+        };
+        return ajaxOptions
+      }
 
-      const ajaxOptions = {
-        url:
-          CORS_ANYWHERE_URL +
-          "https://superheroapi.com/api/10222311384718653/" + randomCharacterNumber,
-        method: "GET",
-        dataType: "json",
-        headers: {
-          "x-requested-with": "xhr",
-        },
-      };
-      const ajaxOptions2 = {
-        url:
-          CORS_ANYWHERE_URL +
-          "https://superheroapi.com/api/10222311384718653/" + randomCharacterNumber2,
-        method: "GET",
-        dataType: "json",
-        headers: {
-          "x-requested-with": "xhr",
-        },
-      };
-      $.ajax(ajaxOptions).then(renderFirstCharacter);
-      $.ajax(ajaxOptions2).then(renderSecondCharacter)
+      $.ajax(generateAjaxOptions(universe, randomCharacterId1)).then(renderFirstCharacter);
+      $.ajax(generateAjaxOptions(universe, randomCharacterId2)).then(renderSecondCharacter)
     </script>
   </body>
 </html>
