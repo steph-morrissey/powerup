@@ -43,13 +43,27 @@
       function renderCharacters(data) {
         const character1 = $("#character1")
         const character2 = $("#character2")
-       const character1Card = $("<div>").addClass("ui card").append($("<img>").attr({}))
+       const character1CardUpperDiv = $("<div>").addClass("ui card")
+       const character1ImageSecondDiv = $("<div>").addClass("image")
+      const character1Image = $("<img>").attr({
+         src: data.image.url,
+         alt: data.name
+       })
+       character1.append(character1CardUpperDiv.append(character1ImageSecondDiv.append(character1Image)))
+       const character2CardUpperDiv = $("<div>").addClass("ui card")
+       const character2ImageSecondDiv = $("<div>").addClass("image")
+        const character2Image = $("<img>").attr({
+         src: data.image.url,
+         alt: data.name
+       })
+       character2.append(character2CardUpperDiv.append(character2ImageSecondDiv.append(character2Image)))
         console.log(data);
       }
+      const randomCharacterNumber = Math.floor(Math.random() * (731))
       const ajaxOptions = {
         url:
           CORS_ANYWHERE_URL +
-          "https://superheroapi.com/api/10222311384718653/100",
+          "https://superheroapi.com/api/10222311384718653/" + randomCharacterNumber,
         method: "GET",
         dataType: "json",
         headers: {
