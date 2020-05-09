@@ -72,18 +72,30 @@
 
       //Generates the superhero card
       function generateSuperheroCard(data){
-        const characterCardUpperDiv = $("<div>").addClass("ui card")
-        const characterImageSecondDiv = $("<div>").addClass("image")
+        const characterCardUpperDiv = $("<div>").addClass("ui fluid card")
+        const characterImageSecondDiv = $("<div>").addClass("image ui center aligned")
         const characterImage = $("<img>").attr({
            src: data.image.url,
-           alt: data.name
+           class: "ui medium circular image",
+           alt: data.name,
+           height: "200px"
         })
-        return characterCardUpperDiv.append(characterImageSecondDiv.append(characterImage))
+        const characterNameHeading = $('<h4>').text(data.name)
+
+        return characterCardUpperDiv.append(characterImageSecondDiv.append(characterImage, characterNameHeading))
       }
       
       //Generates the pokemon card
-      function generatePokemonCard(data){
-        return "Pokemon Card"
+      function generatePokemonCard(data){ 
+        const characterCardUpperDiv = $("<div>").addClass("ui fluid card")
+        const characterImageSecondDiv = $("<div>").addClass("image ui center aligned")
+        const characterImage = $("<img>").attr({
+           src: data.sprites.front_default,
+           class: "ui small circular image",
+           alt: data.name
+        })
+        const characterNameHeading = $('<h4>').text(data.name)
+        return characterCardUpperDiv.append(characterImageSecondDiv.append(characterImage, characterNameHeading));
       }
 
       //Renders the first character
