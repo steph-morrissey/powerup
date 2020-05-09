@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="assets/css/semantic.min.css" />
     <script
       src="https://code.jquery.com/jquery-3.1.1.min.js"
       integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
@@ -11,9 +12,26 @@
     <title>Game Screen</title>
   </head>
   <body>
-    <h1>Universe</h1>
+    <h1 class="ui center aligned segment">PowerUP!</h1>
+    <div class="ui center aligned grid">
+      <div class="ui center aligned row">
+        <div id="character1" class="seven wide column">
+          
+        </div>
+      
+        <div class="two wide column">
+          <button class="ui primary basic button">Primary</button>
+          <button class="ui secondary basic button">Secondary</button>
+          <button class="ui positive basic button">Positive</button>
+          <button class="ui negative basic button">Negative</button>
+        </div>
+      
+        <div id="character2" class="seven wide column">
 
+        </div>
+        
     <script>
+      const CORS_ANYWHERE_URL = "https://cors-anywhere.herokuapp.com/";
       function getUniverse() {
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
@@ -22,16 +40,19 @@
       }
       const universe = getUniverse();
       console.log(universe);
-
       function renderCharacters(data) {
         console.log(data);
       }
-
       const ajaxOptions = {
-        url: "https://superheroapi.com/api/10222311384718653/100",
+        url:
+          CORS_ANYWHERE_URL +
+          "https://superheroapi.com/api/10222311384718653/100",
         method: "GET",
+        dataType: "json",
+        headers: {
+          "x-requested-with": "xhr",
+        },
       };
-
       $.ajax(ajaxOptions).then(renderCharacters);
     </script>
   </body>
