@@ -72,13 +72,13 @@
 
       //Generates the superhero card
       function generateSuperheroCard(data){
-        const character1CardUpperDiv = $("<div>").addClass("ui card")
-        const character1ImageSecondDiv = $("<div>").addClass("image")
-        const character1Image = $("<img>").attr({
+        const characterCardUpperDiv = $("<div>").addClass("ui card")
+        const characterImageSecondDiv = $("<div>").addClass("image")
+        const characterImage = $("<img>").attr({
            src: data.image.url,
            alt: data.name
         })
-        return character1CardUpperDiv.append(character1ImageSecondDiv.append(character1Image))
+        return characterCardUpperDiv.append(characterImageSecondDiv.append(characterImage))
       }
       
       //Generates the pokemon card
