@@ -16,23 +16,19 @@
     <h1 class="ui center aligned segment">PowerUP!</h1>
     <div class="ui center aligned grid">
       <div class="ui center aligned row">
-        <div id="character1" class="seven wide column">
+        <div id="character1" class="six wide column">
           
         </div>
       
-        <div id="renderButtons" class="ui middle aligned two wide column">
-          <!-- <button class="ui primary basic button">Intelligence</button> -->
-          <!-- <button class="ui secondary basic button">Strength</button> -->
-          <!-- <button class="ui positive basic button">Speed</button> -->
-          <!-- <button class="ui negative basic button">Durability</button> -->
+        <div id="renderButtons" class="ui middle aligned four wide column">
         
         </div>
       
-        <div id="character2" class="seven wide column">
+        <div id="character2" class="six wide column">
         </div>
         
     <script>
-      const CORS_ANYWHERE_URL = "https://cors-anywhere.herokuapp.com/";
+      const CORS_ANYWHERE_URL = "https://radiant-stream-08604.herokuapp.com/";
       const SUPERHERO_URL = "https://superheroapi.com/api/10222311384718653/" 
       const POKEMON_URL = "https://pokeapi.co/api/v2/pokemon/"
       //Declaring 2 variables set to false
@@ -66,8 +62,8 @@
       }
       //Generates the superhero card
       function generateSuperheroCard(data) {
-        const characterCardUpperDiv = $("<div>").addClass("card");
-        const characterImageSecondDiv = $("<div>").addClass("image");
+        const characterCardUpperDiv = $("<div>").addClass("ui fluid");
+        const characterImageSecondDiv = $("<div>").addClass("ui large center aligned image");
         const characterImage = $("<img>").attr({
           src: data.image.url,
           alt: data.name,
@@ -136,13 +132,27 @@
         //If first 2 characters are rendered do something
         if (firstCharacterRendered && secondCharacterRendered){
           console.log('call function to render buttons')
-          const randomizeButton = $('<button>').addClass("ui primary basic button").text("RANDOMIZE AGAIN")
-          const startGameButton = $("<button>").addClass("ui primary basic button").text("START GAME")
-          $('#renderButtons').append(randomizeButton, startGameButton)
+          const startButtonsDiv = $('<div>').addClass('ui vertical buttons')
+          const randomizeButton = $('<button>').addClass("ui red basic button").text("RANDOMIZE AGAIN")
+          const startGameButton = $("<button>").addClass("ui red basic button").text("START GAME")
+          startButtonsDiv.append(randomizeButton, startGameButton)
+          $('#renderButtons').append(startButtonsDiv)
           $("#body").removeClass("ui active dimmer")
+          startGameButton.on('click', renderPowerstatButtons)
         }
       }
-      
+      function renderPowerstatButtons() {
+        $('#renderButtons').empty()
+        const buttonsDiv = $('<div>').addClass('ui vertical buttons')
+        const intelligenceButton = $('<button>').addClass("large ui red basic button").text("Intelligence")
+        const strengthButton = $('<button>').addClass("large ui red basic button").text("Strength")
+        const speedButton = $('<button>').addClass("large ui red basic button").text("Speed")
+        const durabilityButton = $('<button>').addClass("large ui red basic button").text("Durability")
+        const powerButton = $('<button>').addClass("large ui red basic button").text("Power")
+        buttonsDiv.append(intelligenceButton, strengthButton, speedButton, durabilityButton, powerButton)
+        $('#renderButtons').append(buttonsDiv)
+
+      }
       //Generates the the ajax calls
       function generateAjaxOptions(universe, randomCharacterId){
         let url
