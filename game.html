@@ -11,7 +11,8 @@
     ></script>
     <title>Game Screen</title>
   </head>
-  <body>
+  <body id="body" class="ui active dimmer">
+    <div class="ui large text loader">Loading</div>
     <h1 class="ui center aligned segment">PowerUP!</h1>
     <div class="ui center aligned grid">
       <div class="ui center aligned row">
@@ -138,6 +139,7 @@
           const randomizeButton = $('<button>').addClass("ui primary basic button").text("RANDOMIZE AGAIN")
           const startGameButton = $("<button>").addClass("ui primary basic button").text("START GAME")
           $('#renderButtons').append(randomizeButton, startGameButton)
+          $("#body").removeClass("ui active dimmer")
         }
       }
       
