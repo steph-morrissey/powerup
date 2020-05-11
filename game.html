@@ -15,65 +15,46 @@
     <h1 class="ui center aligned segment">PowerUP!</h1>
     <div class="ui center aligned grid">
       <div class="ui center aligned row">
+        <div id="character1" class="seven wide column">
+          
+        </div>
+      
+        <div id="renderButtons" class="ui middle aligned two wide column">
+          <!-- <button class="ui primary basic button">Intelligence</button> -->
+          <!-- <button class="ui secondary basic button">Strength</button> -->
+          <!-- <button class="ui positive basic button">Speed</button> -->
+          <!-- <button class="ui negative basic button">Durability</button> -->
         
-        <div class="ui link cards">
-          <div id="character1" class="card">
-            <div class="image">
-              <img id="character1Image" src="">
-            </div>
-            <div class="content">
-              <div class="header">Matt Giampietro</div>
-            </div>
-          </div>
-          <div class="middle aligned">
-            <div id="renderButtons" class="ui middle aligned">
-              <button class="ui primary basic button">Intelligence</button>
-              <button class="ui secondary basic button">Strength</button>
-              <button class="ui positive basic button">Speed</button> 
-              <button class="ui negative basic button">Durability</button>
-            </div>
-          </div>
-          <div id="character2" class="card">
-            <div class="image">
-              <img id="character2Image" src="">
-            </div>
-            <div class="content">
-              <div class="header">Elyse</div>
-            </div>
-          </div>
         </div>
+      
+        <div id="character2" class="seven wide column">
         </div>
-        </div>
+        
     <script>
       const CORS_ANYWHERE_URL = "https://cors-anywhere.herokuapp.com/";
       const SUPERHERO_URL = "https://superheroapi.com/api/10222311384718653/" 
       const POKEMON_URL = "https://pokeapi.co/api/v2/pokemon/"
-
       //Declaring 2 variables set to false
       let firstCharacterRendered = false;
       let secondCharacterRendered = false;
-
       //Stores the universe in memory
       const universe = getUniverse();
-
       //Stores the random character ID into randomCharacterId's for a given universe
       const randomCharacterId1 = getRandomCharacterNumber(universe)
       const randomCharacterId2 = getRandomCharacterNumber(universe)
-
       //Gets 2 random ID's
       function getRandomCharacterNumber(universe){
         let range
         if(universe==="superhero"){
           range=731
         } else if(universe==="pokemon"){
-          range=806
+          range=800
         } else {
           //Handle the error if
         }
         const randomCharacterNumber = Math.floor(Math.random() * (range))
         return randomCharacterNumber
       }
-
       //getUniverse gets universe set by the user and sets the queryString to that universe
       function getUniverse() {
         const queryString = window.location.search;
@@ -82,34 +63,40 @@
         //2 possible values pokemon or superhero
         return universe;
       }
-
       //Generates the superhero card
-      function generateSuperheroCard(data){
-        const characterCardUpperDiv = $("<div>").addClass("ui card")
-        const characterImageSecondDiv = $("<div>").addClass("image ui center aligned")
+      function generateSuperheroCard(data) {
+        const characterCardUpperDiv = $("<div>").addClass("card");
+        const characterImageSecondDiv = $("<div>").addClass("image");
         const characterImage = $("<img>").attr({
-           src: data.image.url,
-           alt: data.name,
-           height: "200px"
-        }).addClass("ui small image")
-        const characterNameHeading = $('<h4>').text(data.name)
-
-        return characterCardUpperDiv.append(characterImageSecondDiv.append(characterImage, characterNameHeading))
+          src: data.image.url,
+          alt: data.name,
+        });
+        const characterContent = $("<div>").addClass("content");
+        const characterName = $("<div>").addClass("header").text(data.name);
+        return characterCardUpperDiv.append(
+          characterImageSecondDiv.append(
+            characterImage,
+            characterContent.append(characterName)
+          )
+        );
       }
-      
       //Generates the pokemon card
-      function generatePokemonCard(data){ 
-        const characterCardUpperDiv = $("<div>").addClass("ui fluid card")
-        const characterImageSecondDiv = $("<div>").addClass("image ui center aligned")
+      function generatePokemonCard(data){
+        const characterCardUpperDiv = $("<div>").addClass("card");
+        const characterImageSecondDiv = $("<div>").addClass("image");
         const characterImage = $("<img>").attr({
-           src: data.sprites.front_default,
-           class: "ui small circular image",
-           alt: data.name
-        })
-        const characterNameHeading = $('<h4>').text(data.name)
-        return characterCardUpperDiv.append(characterImageSecondDiv.append(characterImage, characterNameHeading));
+          src: data.sprites.front_default,
+          alt: data.name,
+        });
+        const characterContent = $("<div>").addClass("content");
+        const characterName = $("<div>").addClass("header").text(data.name);
+        return characterCardUpperDiv.append(
+          characterImageSecondDiv.append(
+            characterImage,
+            characterContent.append(characterName)
+          )
+        );
       }
-
       //Renders the first character
       function renderFirstCharacter(data) {
         const character1 = $("#character1")
@@ -143,7 +130,6 @@
         console.log("second data received")
         checkBothRendered();
       }
-
       //Checkes both Rendered
       function checkBothRendered() {
         //If first 2 characters are rendered do something
@@ -176,7 +162,6 @@
         };
         return ajaxOptions
       }
-
       $.ajax(generateAjaxOptions(universe, randomCharacterId1)).then(renderFirstCharacter);
       $.ajax(generateAjaxOptions(universe, randomCharacterId2)).then(renderSecondCharacter)
     </script>
