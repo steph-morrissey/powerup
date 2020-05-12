@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="assets/css/semantic.min.css" />
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
     <script
       src="https://code.jquery.com/jquery-3.1.1.min.js"
       integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
@@ -340,6 +340,41 @@
         if (userPlayerHealth === 0){
           $("#display").removeClass ("display")
         }
+
+        // Local Storage
+        let score
+        function saveScore(){
+          const scoreSaveInput = $("#scoreSaveInput")
+          addToLocalStorage(scoreSaveInput, score)
+        }
+        $("#scoreSaveButton").on("click", saveScore)
+
+
+        function addToLocalStorage(name, score){
+    let oldScoreFromLocalStorage = JSON.parse(localStorage.getItem("scores"))
+    if(oldScoreFromLocalStorage===null){
+        const scoresInLocalStorage = [{
+            name: name,
+            score: score
+        }]
+        localStorage.setItem("scores", JSON.stringify(scoresInLocalStorage))
+    }
+    else{
+        oldScoreFromLocalStorage.push([{
+            name: name,
+            score: score
+        }]) 
+        localStorage.setItem("scores", JSON.stringify(oldScoreFromLocalStorage))
+    }
+}
+
+function getFromLocalStorage(){
+    const scoresFromLocalStorage = JSON.parse(localStorage.getItem("scores"))
+    //Append onto the screen
+    const listElement = $("<li>").text(scoresInLocalStorage.name + " " + scoresInLocalStorage.score)
+    $("ulElementOnViewScreen").append(listElement)
+}
+
 
     </script>
 
