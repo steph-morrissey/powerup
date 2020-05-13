@@ -13,7 +13,7 @@
     ></script>
     <title>Game Screen</title>
   </head>
-  <body id="body" class="ui active dimmer">
+  <body id="body">
     <div class="ui large text loader">Loading</div>
     <div>
       <h1 id="powerUpLogo" class="blink ui center aligned segment">PowerUP!</h1>
@@ -62,9 +62,6 @@
       let secondCharacterRendered = false;
       //Stores the universe in memory
       const universe = getUniverse();
-      //Stores the random character ID into randomCharacterId's for a given universe
-      const randomCharacterId1 = getRandomCharacterNumber(universe);
-      const randomCharacterId2 = getRandomCharacterNumber(universe);
       //User power stats
       let userPowerStats;
       let computerPowerStats;
@@ -109,7 +106,9 @@
           alt: data.name,
         });
         const characterContent = $("<div>").addClass("content");
-        const characterName = $("<div>").addClass("header").text(data.name);
+        const characterName = $("<div>")
+          .addClass("ui yellow header")
+          .text(data.name);
         return characterCardUpperDiv.append(
           characterImageSecondDiv.append(
             characterImage,
@@ -146,6 +145,7 @@
           //ERROR HANDLING
         }
         character1.append(card);
+        character1.addClass("character1Card");
         firstCharacterRendered = true;
         userPowerStats = data.powerstats;
         checkBothRendered();
@@ -163,6 +163,8 @@
           //ERROR HANDLING
         }
         character2.append(card);
+        character2.addClass("character2Card");
+
         secondCharacterRendered = true;
         computerPowerStats = data.powerstats;
         checkBothRendered();
@@ -171,24 +173,28 @@
       function checkBothRendered() {
         // If first 2 characters are rendered do something
         if (firstCharacterRendered && secondCharacterRendered) {
-          const exitGame = $("<button>")
-            .addClass("ui center aligned red basic button")
-            .text("EXIT GAME");
-          $("#exitGame").append(exitGame);
-          const startButtonsDiv = $("<div>").addClass("ui vertical buttons");
-          const randomizeButton = $("<button>")
-            .addClass("ui red basic button")
-            .text("RANDOMIZE AGAIN");
-          const startGameButton = $("<button>")
-            .addClass("ui olive basic button")
-            .text("START GAME");
-          startButtonsDiv.append(randomizeButton, startGameButton);
-          $("#renderButtons").append(startButtonsDiv);
-          $("#body").removeClass("ui active dimmer");
-          randomizeButton.on("click", randomizeAgain);
-          startGameButton.on("click", renderPowerstatButtons);
-          exitGame.on("click", startScreen);
+          renderPowerstatButtons();
         }
+      }
+
+      function renderGameControl() {
+        const exitGame = $("<button>")
+          .addClass("ui center aligned red basic button")
+          .text("EXIT GAME");
+        $("#exitGame").append(exitGame);
+        const startButtonsDiv = $("<div>").addClass("ui vertical buttons");
+        const randomizeButton = $("<button>")
+          .addClass("ui red basic button")
+          .text("RANDOMIZE AGAIN");
+        const startGameButton = $("<button>")
+          .addClass("ui olive basic button")
+          .text("START GAME");
+        startButtonsDiv.append(randomizeButton, startGameButton);
+        $("#renderButtons").append(startButtonsDiv);
+        $("#body").removeClass("ui active dimmer");
+        randomizeButton.on("click", randomizeAgain);
+        startGameButton.on("click", getRandomCharactersFromApi);
+        exitGame.on("click", startScreen);
       }
 
       // Reloads page to produce two new randomized characters
@@ -249,6 +255,7 @@
           console.log("tie");
           tiePoint();
         }
+        getRandomCharactersFromApi();
       }
 
       function userWins() {
@@ -295,12 +302,23 @@
         };
         return ajaxOptions;
       }
-      $.ajax(generateAjaxOptions(universe, randomCharacterId1)).then(
-        renderFirstCharacter
-      );
-      $.ajax(generateAjaxOptions(universe, randomCharacterId2)).then(
-        renderSecondCharacter
-      );
+
+      function getRandomCharactersFromApi() {
+        //Empty previous characters
+        $("#character1").empty();
+        $("#character2").empty();
+        //Stores the random character ID into randomCharacterId's for a given universe
+        const randomCharacterId1 = getRandomCharacterNumber(universe);
+        const randomCharacterId2 = getRandomCharacterNumber(universe);
+        $.ajax(generateAjaxOptions(universe, randomCharacterId1)).then(
+          renderFirstCharacter
+        );
+        $.ajax(generateAjaxOptions(universe, randomCharacterId2)).then(
+          renderSecondCharacter
+        );
+      }
+
+      renderGameControl();
 
       //Firework Celebration
       window.human = false;
