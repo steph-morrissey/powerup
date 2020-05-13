@@ -4,51 +4,59 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="assets/css/semantic.min.css" />
-    <title>Power Up</title>
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css" />
+    <title>Power Up Game</title>
   </head>
   <body>
-    <h1 class="ui center aligned segment">PowerUP!</h1>
+    <h1 id="powerUpLogo" class="blink ui center aligned segment">
+      PowerUP!
+    </h1>
     <div class="ui center aligned grid">
       <div class="ui center aligned row">
         <div class="eight wide column">
-          <div class="ui card">
+          <div class="ui right floated">
             <div class="image">
-              <a href="game.html?universe=marvel" class="ui medium image">
+              <a href="game.html?universe=superhero" class="ui medium image">
                 <img
-                  src="assets/images/marvel_cover_image.jpg"
-                  alt="Marvel cover photo image"
+                  id="superheroCard"
+                  src="assets/images/superhero_cover_image.jpg"
+                  alt="Superhero cover photo image"
                 />
               </a>
             </div>
-            <div class="content">
-              <a class="header">Marvel</a>
+            <div id="descriptionFrame" class="content">
+              <a style="color: red; font-size: 24px;" class="header"
+                >Superhero</a
+              >
               <div class="description">
-                Click this universe play as Marvel
+                <u>Click this universe play as Superhero characters</u>
               </div>
             </div>
           </div>
         </div>
         <div class="eight wide column">
-          <div class="ui card">
+          <div class="ui left floated">
             <div class="image">
-              <a href="game.html?universe=dc" class="ui medium image">
+              <a href="game.html?universe=pokemon" class="ui medium image">
                 <img
-                  src="assets/images/dc_cover_image.jpg"
-                  alt="DC cover photo image"
+                  id="superheroCard"
+                  src="assets/images/pokemon_cover_image.png"
+                  alt="Pokemon cover photo image"
                 />
               </a>
             </div>
-            <div class="content">
-              <a class="header">DC</a>
+            <div id="descriptionFrame" class="content">
+              <a style="color: yellow; font-size: 24px;" class="header"
+                >Pokemon</a
+              >
               <div class="description">
-                Click this universe play as DC
+                <u>Click this universe to play as Pokemon characters</u>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-
     <script
       src="https://code.jquery.com/jquery-3.1.1.min.js"
       integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="

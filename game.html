@@ -3,6 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="assets/css/semantic.min.css" />
+    <link rel="stylesheet" type="text/css" href="assets/css/icon.min.css" />
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css" />
     <script
       src="https://code.jquery.com/jquery-3.1.1.min.js"
       integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
@@ -10,29 +13,494 @@
     ></script>
     <title>Game Screen</title>
   </head>
-  <body>
-    <h1>Universe</h1>
+  <body id="body" class="ui active dimmer">
+    <div class="ui large text loader">Loading</div>
+    <div>
+      <h1 id="powerUpLogo" class="blink ui center aligned segment">PowerUP!</h1>
+    </div>
+    <section id="mainGameScreen">
+      <div class="ui center aligned grid" id="exitGame"></div>
+      <div class="ui center aligned grid">
+        <div class="ui center aligned row">
+          <div id="character1" class="six wide column"></div>
+
+          <div
+            id="renderButtons"
+            class="ui middle aligned four wide column"
+          ></div>
+
+          <div id="character2" class="six wide column"></div>
+        </div>
+      </div>
+    </section>
+    <section id="finalScore" class="display">
+      <!------Game End Screen----->
+      <div class="ui one column stackable center aligned page grid display">
+        <div class="column twelve wide">
+          <div class="ui centered card">
+            <div class="content">
+              <h3>GAME OVER</h3>
+            </div>
+            <div id="scoreSaveInput" class="ui action input">
+              <input type="text" placeholder="Enter your initials here..." />
+              <button id="scoreSaveButton" class="ui red basic button">
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <canvas class="fireworks"></canvas>
+    </section>
 
     <script>
+      const CORS_ANYWHERE_URL = "https://radiant-stream-08604.herokuapp.com/";
+      const SUPERHERO_URL = "https://superheroapi.com/api/10222311384718653/";
+      const POKEMON_URL = "https://pokeapi.co/api/v2/pokemon/";
+      //Declaring 2 variables set to false
+      let firstCharacterRendered = false;
+      let secondCharacterRendered = false;
+      //Stores the universe in memory
+      const universe = getUniverse();
+      //Stores the random character ID into randomCharacterId's for a given universe
+      const randomCharacterId1 = getRandomCharacterNumber(universe);
+      const randomCharacterId2 = getRandomCharacterNumber(universe);
+      //User power stats
+      let userPowerStats;
+      let computerPowerStats;
+      //Declaring counter to be used for score
+      let userCounter = 0;
+      let computerCounter = 0;
+
+      // Returns user to start screen if Exit Game button is clicked
+      function startScreen() {
+        location.href = "index.html";
+      }
+
+      //Gets 2 random ID's
+      function getRandomCharacterNumber(universe) {
+        let range;
+        if (universe === "superhero") {
+          range = 731;
+        } else if (universe === "pokemon") {
+          range = 800;
+        } else {
+          //Handle the error if
+        }
+        const randomCharacterNumber = Math.floor(Math.random() * range);
+        return randomCharacterNumber;
+      }
+      //getUniverse gets universe set by the user and sets the queryString to that universe
       function getUniverse() {
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
         const universe = urlParams.get("universe");
+        //2 possible values pokemon or superhero
         return universe;
       }
-      const universe = getUniverse();
-      console.log(universe);
-
-      function renderCharacters(data) {
-        console.log(data);
+      //Generates the superhero card
+      function generateSuperheroCard(data) {
+        const characterCardUpperDiv = $("<div>").addClass("ui fluid");
+        const characterImageSecondDiv = $("<div>").addClass(
+          "ui large center aligned image"
+        );
+        const characterImage = $("<img>").attr({
+          src: data.image.url,
+          alt: data.name,
+        });
+        const characterContent = $("<div>").addClass("content");
+        const characterName = $("<div>").addClass("header").text(data.name);
+        return characterCardUpperDiv.append(
+          characterImageSecondDiv.append(
+            characterImage,
+            characterContent.append(characterName)
+          )
+        );
+      }
+      //Generates the pokemon card
+      function generatePokemonCard(data) {
+        const characterCardUpperDiv = $("<div>").addClass("card");
+        const characterImageSecondDiv = $("<div>").addClass("image");
+        const characterImage = $("<img>").attr({
+          src: data.sprites.front_default,
+          alt: data.name,
+        });
+        const characterContent = $("<div>").addClass("content");
+        const characterName = $("<div>").addClass("header").text(data.name);
+        return characterCardUpperDiv.append(
+          characterImageSecondDiv.append(
+            characterImage,
+            characterContent.append(characterName)
+          )
+        );
+      }
+      //Renders the first character
+      function renderFirstCharacter(data) {
+        const character1 = $("#character1");
+        let card;
+        if (universe === "superhero") {
+          card = generateSuperheroCard(data);
+        } else if (universe === "pokemon") {
+          card = generatePokemonCard(data);
+        } else {
+          //ERROR HANDLING
+        }
+        character1.append(card);
+        firstCharacterRendered = true;
+        userPowerStats = data.powerstats;
+        checkBothRendered();
       }
 
-      const ajaxOptions = {
-        url: "https://superheroapi.com/api/10222311384718653/100",
-        method: "GET",
-      };
+      //Renders the second character
+      function renderSecondCharacter(data) {
+        const character2 = $("#character2");
+        let card;
+        if (universe === "superhero") {
+          card = generateSuperheroCard(data);
+        } else if (universe === "pokemon") {
+          card = generatePokemonCard(data);
+        } else {
+          //ERROR HANDLING
+        }
+        character2.append(card);
+        secondCharacterRendered = true;
+        computerPowerStats = data.powerstats;
+        checkBothRendered();
+      }
+      //Checkes both Rendered
+      function checkBothRendered() {
+        // If first 2 characters are rendered do something
+        if (firstCharacterRendered && secondCharacterRendered) {
+          const exitGame = $("<button>")
+            .addClass("ui center aligned red basic button")
+            .text("EXIT GAME");
+          $("#exitGame").append(exitGame);
+          const startButtonsDiv = $("<div>").addClass("ui vertical buttons");
+          const randomizeButton = $("<button>")
+            .addClass("ui red basic button")
+            .text("RANDOMIZE AGAIN");
+          const startGameButton = $("<button>")
+            .addClass("ui olive basic button")
+            .text("START GAME");
+          startButtonsDiv.append(randomizeButton, startGameButton);
+          $("#renderButtons").append(startButtonsDiv);
+          $("#body").removeClass("ui active dimmer");
+          randomizeButton.on("click", randomizeAgain);
+          startGameButton.on("click", renderPowerstatButtons);
+          exitGame.on("click", startScreen);
+        }
+      }
 
-      $.ajax(ajaxOptions).then(renderCharacters);
+      // Reloads page to produce two new randomized characters
+      function randomizeAgain() {
+        location.reload();
+      }
+
+      function renderPowerstatButtons() {
+        $("#renderButtons").empty();
+        const buttonsDiv = $("<div>")
+          .addClass("ui vertical buttons")
+          .attr("id", "powerstatsButtons");
+        const intelligenceButton = $("<button>")
+          .addClass("large ui red basic button powerstat")
+          .attr("data-intelligence", userPowerStats.intelligence)
+          .text("Intelligence");
+        const strengthButton = $("<button>")
+          .addClass("large ui red basic button powerstat")
+          .attr("data-strength", userPowerStats.strength)
+          .text("Strength");
+        const speedButton = $("<button>")
+          .addClass("large ui red basic button powerstat")
+          .attr("data-speed", userPowerStats.speed)
+          .text("Speed");
+        const durabilityButton = $("<button>")
+          .addClass("large ui red basic button powerstat")
+          .attr("data-durability", userPowerStats.durability)
+          .text("Durability");
+        const powerButton = $("<button>")
+          .addClass("large ui red basic button powerstat")
+          .attr("data-power", userPowerStats.power)
+          .text("Power");
+        buttonsDiv.append(
+          intelligenceButton,
+          strengthButton,
+          speedButton,
+          durabilityButton,
+          powerButton
+        );
+        $("#renderButtons").append(buttonsDiv);
+
+        $(".powerstat").on("click", compareStatsWithComputer);
+      }
+
+      function compareStatsWithComputer() {
+        const powerstatObject = $(this).data();
+        const powerstatArray = Object.entries(powerstatObject);
+        const userAbility = powerstatArray[0][0];
+        const userAbilityValue = powerstatArray[0][1];
+        const computerAbilityValue = computerPowerStats[userAbility];
+        if (userAbilityValue < computerAbilityValue) {
+          console.log("user loses");
+          computerWins();
+        } else if (userAbility > computerAbilityValue) {
+          console.log("user wins");
+          userWins();
+        } else {
+          console.log("tie");
+          tiePoint();
+        }
+      }
+
+      function userWins() {
+        $("#character1").transition("jiggle");
+        userCounter++;
+        console.log("user" + userCounter);
+        if (userCounter == 3) {
+          console.log("Enemy defeated..");
+        }
+      }
+
+      function computerWins() {
+        $("#character2").transition("jiggle");
+        computerCounter++;
+        console.log("computer" + computerCounter);
+        if (computerCounter == 3) {
+          $("#mainGameScreen").addClass("display");
+          $("#finalScore").removeClass("display");
+        }
+      }
+
+      function tiePoint() {
+        $("#character1").transition("jiggle");
+        $("#character2").transition("jiggle");
+      }
+
+      //Generates the the ajax calls
+      function generateAjaxOptions(universe, randomCharacterId) {
+        let url;
+        if (universe === "superhero") {
+          url = SUPERHERO_URL;
+        } else if (universe === "pokemon") {
+          url = POKEMON_URL;
+        } else {
+          //ERROR HANDLING
+        }
+        const ajaxOptions = {
+          url: CORS_ANYWHERE_URL + url + randomCharacterId,
+          method: "GET",
+          dataType: "json",
+          headers: {
+            "x-requested-with": "xhr",
+          },
+        };
+        return ajaxOptions;
+      }
+      $.ajax(generateAjaxOptions(universe, randomCharacterId1)).then(
+        renderFirstCharacter
+      );
+      $.ajax(generateAjaxOptions(universe, randomCharacterId2)).then(
+        renderSecondCharacter
+      );
+
+      //Firework Celebration
+      window.human = false;
+
+      var canvasEl = document.querySelector(".fireworks");
+      var ctx = canvasEl.getContext("2d");
+      var numberOfParticules = 30;
+      var pointerX = 0;
+      var pointerY = 0;
+      var tap =
+        "ontouchstart" in window || navigator.msMaxTouchPoints
+          ? "touchstart"
+          : "mousedown";
+      var colors = ["#FF1461", "#18FF92", "#5A87FF", "#FBF38C"];
+
+      function setCanvasSize() {
+        canvasEl.width = window.innerWidth * 2;
+        canvasEl.height = window.innerHeight * 2;
+        canvasEl.style.width = window.innerWidth + "px";
+        canvasEl.style.height = window.innerHeight + "px";
+        canvasEl.getContext("2d").scale(2, 2);
+      }
+
+      function updateCoords(e) {
+        pointerX = e.clientX || e.touches[0].clientX;
+        pointerY = e.clientY || e.touches[0].clientY;
+      }
+
+      function setParticuleDirection(p) {
+        var angle = (anime.random(0, 360) * Math.PI) / 180;
+        var value = anime.random(50, 180);
+        var radius = [-1, 1][anime.random(0, 1)] * value;
+        return {
+          x: p.x + radius * Math.cos(angle),
+          y: p.y + radius * Math.sin(angle),
+        };
+      }
+
+      function createParticule(x, y) {
+        var p = {};
+        p.x = x;
+        p.y = y;
+        p.color = colors[anime.random(0, colors.length - 1)];
+        p.radius = anime.random(16, 32);
+        p.endPos = setParticuleDirection(p);
+        p.draw = function () {
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, 2 * Math.PI, true);
+          ctx.fillStyle = p.color;
+          ctx.fill();
+        };
+        return p;
+      }
+
+      function createCircle(x, y) {
+        var p = {};
+        p.x = x;
+        p.y = y;
+        p.color = "#FFF";
+        p.radius = 0.1;
+        p.alpha = 0.5;
+        p.lineWidth = 6;
+        p.draw = function () {
+          ctx.globalAlpha = p.alpha;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, 2 * Math.PI, true);
+          ctx.lineWidth = p.lineWidth;
+          ctx.strokeStyle = p.color;
+          ctx.stroke();
+          ctx.globalAlpha = 1;
+        };
+        return p;
+      }
+
+      function renderParticule(anim) {
+        for (var i = 0; i < anim.animatables.length; i++) {
+          anim.animatables[i].target.draw();
+        }
+      }
+
+      function animateParticules(x, y) {
+        var circle = createCircle(x, y);
+        var particules = [];
+        for (var i = 0; i < numberOfParticules; i++) {
+          particules.push(createParticule(x, y));
+        }
+        anime
+          .timeline()
+          .add({
+            targets: particules,
+            x: function (p) {
+              return p.endPos.x;
+            },
+            y: function (p) {
+              return p.endPos.y;
+            },
+            radius: 0.1,
+            duration: anime.random(1200, 1800),
+            easing: "easeOutExpo",
+            update: renderParticule,
+          })
+          .add({
+            targets: circle,
+            radius: anime.random(80, 160),
+            lineWidth: 0,
+            alpha: {
+              value: 0,
+              easing: "linear",
+              duration: anime.random(600, 800),
+            },
+            duration: anime.random(1200, 1800),
+            easing: "easeOutExpo",
+            update: renderParticule,
+            offset: 0,
+          });
+      }
+
+      var render = anime({
+        duration: Infinity,
+        update: function () {
+          ctx.clearRect(0, 0, canvasEl.width, canvasEl.height);
+        },
+      });
+
+      document.addEventListener(
+        tap,
+        function (e) {
+          window.human = true;
+          render.play();
+          updateCoords(e);
+          animateParticules(pointerX, pointerY);
+        },
+        false
+      );
+
+      var centerX = window.innerWidth / 2;
+      var centerY = window.innerHeight / 2;
+
+      function autoClick() {
+        if (window.human) return;
+        animateParticules(
+          anime.random(centerX - 50, centerX + 50),
+          anime.random(centerY - 50, centerY + 50)
+        );
+        anime({ duration: 200 }).finished.then(autoClick);
+      }
+
+      autoClick();
+      setCanvasSize();
+      window.addEventListener("resize", setCanvasSize, false);
+
+      if (userPlayerHealth === 0) {
+        $("#display").removeClass("display");
+      }
+
+      // Local Storage
+      let score;
+      function saveScore() {
+        const scoreSaveInput = $("#scoreSaveInput");
+        addToLocalStorage(scoreSaveInput, score);
+      }
+      $("#scoreSaveButton").on("click", saveScore);
+
+      function addToLocalStorage(name, score) {
+        let oldScoreFromLocalStorage = JSON.parse(
+          localStorage.getItem("scores")
+        );
+        if (oldScoreFromLocalStorage === null) {
+          const scoresInLocalStorage = [
+            {
+              name: name,
+              score: score,
+            },
+          ];
+          localStorage.setItem("scores", JSON.stringify(scoresInLocalStorage));
+        } else {
+          oldScoreFromLocalStorage.push([
+            {
+              name: name,
+              score: score,
+            },
+          ]);
+          localStorage.setItem(
+            "scores",
+            JSON.stringify(oldScoreFromLocalStorage)
+          );
+        }
+      }
+
+      function getFromLocalStorage() {
+        const scoresFromLocalStorage = JSON.parse(
+          localStorage.getItem("scores")
+        );
+        //Append onto the screen
+        const listElement = $("<li>").text(
+          scoresInLocalStorage.name + " " + scoresInLocalStorage.score
+        );
+        $("ulElementOnViewScreen").append(listElement);
+      }
     </script>
+    <script src="assets/js/transition.min.js"></script>
   </body>
 </html>
