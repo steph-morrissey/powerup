@@ -169,11 +169,18 @@
         computerPowerStats = data.powerstats;
         checkBothRendered();
       }
+
       //Checkes both Rendered
       function checkBothRendered() {
         // If first 2 characters are rendered do something
         if (firstCharacterRendered && secondCharacterRendered) {
-          renderPowerstatButtons();
+          if (universe === "superhero") {
+            renderPowerstatButtons();
+          }
+
+          if (universe === "pokemon") {
+            renderAbilitiesButtons();
+          }
         }
       }
 
@@ -239,6 +246,24 @@
         $(".powerstat").on("click", compareStatsWithComputer);
       }
 
+      function renderAbilitiesButtons() {
+        $("#renderButtons").empty();
+        const buttonsDiv = $("<div>")
+          .addClass("ui vertical buttons")
+          .attr("id", "powerstatsButtons");
+        const attackButton = $("<button>")
+          .addClass("large ui red basic button powerstat")
+          .attr("data-attack", "90")
+          .text("Attack");
+        const defendButton = $("<button>")
+          .addClass("large ui red basic button powerstat")
+          .attr("data-defend", "20")
+          .text("Defend");
+        buttonsDiv.append(attackButton, defendButton);
+        $("#renderButtons").append(buttonsDiv);
+        $(".powerstat").on("click", compareAbilityWithComputer);
+      }
+
       function compareStatsWithComputer() {
         const powerstatObject = $(this).data();
         const powerstatArray = Object.entries(powerstatObject);
@@ -246,14 +271,39 @@
         const userAbilityValue = powerstatArray[0][1];
         const computerAbilityValue = computerPowerStats[userAbility];
         if (userAbilityValue < computerAbilityValue) {
-          console.log("user loses");
           computerWins();
         } else if (userAbility > computerAbilityValue) {
-          console.log("user wins");
           userWins();
         } else {
-          console.log("tie");
           tiePoint();
+        }
+        getRandomCharactersFromApi();
+      }
+
+      function compareAbilityWithComputer() {
+        const powerstatObject = $(this).data();
+        const powerstatArray = Object.entries(powerstatObject);
+        const userAbility = powerstatArray[0][0];
+        const userAbilityValue = powerstatArray[0][1];
+        const computerDefendValue = 60;
+        const computerAttackValue = 30;
+        if (userAbility === "attack") {
+          if (userAbilityValue > computerDefendValue) {
+            userWins();
+          } else if (userAbilityValue < computerDefendValue) {
+            computerWins();
+          } else {
+            tiePoint();
+          }
+        }
+        if (userAbility === "defend") {
+          if (userAbilityValue > computerAttackValue) {
+            userWins();
+          } else if (userAbilityValue < computerAttackValue) {
+            computerWins();
+          } else {
+            tiePoint();
+          }
         }
         getRandomCharactersFromApi();
       }
@@ -261,16 +311,13 @@
       function userWins() {
         $("#character1").transition("jiggle");
         userCounter++;
-        console.log("user" + userCounter);
         if (userCounter == 3) {
-          console.log("Enemy defeated..");
         }
       }
 
       function computerWins() {
         $("#character2").transition("jiggle");
         computerCounter++;
-        console.log("computer" + computerCounter);
         if (computerCounter == 3) {
           $("#mainGameScreen").addClass("display");
           $("#finalScore").removeClass("display");
