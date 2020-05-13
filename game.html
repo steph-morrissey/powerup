@@ -16,11 +16,9 @@
   <div class="ui center aligned grid">
     <div class="ui center aligned row">
       <div id="character1" class="six wide column">
-
       </div>
 
       <div id="renderButtons" class="ui middle aligned four wide column">
-
       </div>
 
       <div id="character2" class="six wide column">
@@ -186,11 +184,13 @@
         function powerObjectForEachItem(character, visibleContentDiv,powerObject, colour){
           powerObject.forEach(function (item) {
             let buttonPowers = $("<button>").text(item).addClass("ui " + colour + " button").attr("style", "padding: 10px; text-transform: uppercase")
-            
+            buttonPowers.on("click", damageOpponent)
             character.append(visibleContentDiv.append(buttonPowers))
           })
         }
+        function damageOpponent(){
 
+        }
         //Get Pokemon Power Buttons Data
         function pokemonPowerButtonsData(data, powerObject){
           let pokemonPowerButtons = data.abilities.forEach(function (index) {
@@ -207,16 +207,17 @@
             return randomPowerNumber
           }
         }
+        
         //Generate pokemon health bar
         function pokemonHealthSystem(width){
-          const progressBar = $("<div>").addClass("ui indicating progress")
-          const healthBar = $("<div>").addClass("bar").attr("style", "width:"+width+"%; margin-top: 10px; color: green")
+          const progressBar = $("<div>").addClass("ui indicating progress active").attr("data-percent", width)
+          const healthBar = $("<div>").addClass("bar").attr("style", "width:"+width+"%; margin-top: 10px;transition-duration: 300ms;")
           const healthBarLabel = $("<div>").addClass("label").text("Health")
           return progressBar.append(healthBar,healthBarLabel)
         }
 
         // ENDING HERE
-        
+
         //Generates the the ajax calls
         function generateAjaxOptions(universe, randomCharacterId) {
           let url
