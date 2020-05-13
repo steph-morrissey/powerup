@@ -85,7 +85,7 @@
             alt: data.name,
           });
           const characterContent = $("<div>").addClass("content");
-          const characterName = $("<div>").addClass("header").text(data.name);
+          const characterName = $("<div>").addClass("ui header").attr("style", "text-transform: uppercase; padding: 10px").text(data.name);
           return characterCardUpperDiv.append(
             characterImageSecondDiv.append(
               characterImage,
@@ -125,6 +125,7 @@
           character2.append(card)
           secondCharacterRendered = true;
           console.log("second data received")
+          renderPokemonPowerButtons2(data)
           checkBothRendered();
         }
         //Checkes both Rendered
@@ -153,37 +154,69 @@
           $('#renderButtons').append(buttonsDiv)
 
         }
-        //Render the pokemon buttons
-        function renderPokemonPowerButtons(data) {
-          const buttonsParentDiv = $('<div>').addClass("ui animated button").attr("tabindex", "0")
-          const visibleContentDiv = $('<div>').addClass("visible content")
-          const hiddenContent = $('<div>').addClass("hidden content").append($("<i>").text("Attack"))
-          const powerObject = []
 
+        // FROM THIS LINE HERE
+
+        //Generate Player 1 Buttons for Pokemon 1
+        function renderPokemonPowerButtons(data) {
+          const visibleContentDiv = $('<div>').addClass("visible content")
+          const powerObject = []
+          const colourOfTheButtons = "orange"
+          let healthValue = 100
+
+          pokemonPowerButtonsData(data, powerObject)
+          powerObjectForEachItem($("#character1"),visibleContentDiv,powerObject, colourOfTheButtons)
+          const healthStats =  pokemonHealthSystem(healthValue)
+          visibleContentDiv.append(healthStats)
+        }
+        //Generate Player 2 Buttons for Pokemon 2
+        function renderPokemonPowerButtons2(data) {
+          const visibleContentDiv = $('<div>').addClass("visible content")
+          const powerObject = []
+          const colourOfTheButtons = "black"
+          let healthValue = 100
+
+          pokemonPowerButtonsData(data,powerObject)
+          powerObjectForEachItem($("#character2"),visibleContentDiv,powerObject, colourOfTheButtons)
+          const healthStats =  pokemonHealthSystem(healthValue)
+          visibleContentDiv.append(healthStats)
+        }
+
+        //Generate the buttons
+        function powerObjectForEachItem(character, visibleContentDiv,powerObject, colour){
+          powerObject.forEach(function (item) {
+            let buttonPowers = $("<button>").text(item).addClass("ui " + colour + " button").attr("style", "padding: 10px; text-transform: uppercase")
+            
+            character.append(visibleContentDiv.append(buttonPowers))
+          })
+        }
+
+        //Get Pokemon Power Buttons Data
+        function pokemonPowerButtonsData(data, powerObject){
           let pokemonPowerButtons = data.abilities.forEach(function (index) {
             const objectEnteriesInIndex = Object.entries(index.ability)
             let powerNumber = returnRandomPowerNumber(objectEnteriesInIndex.length)
             powerObject.push([objectEnteriesInIndex[0][1], powerNumber])
           })
-
-          console.log(powerObject)
-
-          powerObject.forEach(function (item) {
-            let buttonPowers = $("<button>").text(item)
-            
-            console.log(visibleContentDiv)
-            let visibleContent = visibleContentDiv.append(buttonPowers)
-            $("#character1").append(visibleContent)
-          })
+          return pokemonPowerButtons
         }
-
+        //Randomize damage of the stat
         function returnRandomPowerNumber(length) {
           for (let i = 0; i < length; i++) {
             let randomPowerNumber = Math.floor(Math.random() * 100)
             return randomPowerNumber
           }
         }
+        //Generate pokemon health bar
+        function pokemonHealthSystem(width){
+          const progressBar = $("<div>").addClass("ui indicating progress")
+          const healthBar = $("<div>").addClass("bar").attr("style", "width:"+width+"%; margin-top: 10px; color: green")
+          const healthBarLabel = $("<div>").addClass("label").text("Health")
+          return progressBar.append(healthBar,healthBarLabel)
+        }
 
+        // ENDING HERE
+        
         //Generates the the ajax calls
         function generateAjaxOptions(universe, randomCharacterId) {
           let url
