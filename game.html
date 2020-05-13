@@ -39,6 +39,9 @@
       //Stores the random character ID into randomCharacterId's for a given universe
       const randomCharacterId1 = getRandomCharacterNumber(universe)
       const randomCharacterId2 = getRandomCharacterNumber(universe)
+      //User power stats
+      let userPowerStats;
+      let computerPowerStats;
       //Gets 2 random ID's
       function getRandomCharacterNumber(universe){
         let range
@@ -107,8 +110,8 @@
         }
         character1.append(card)
         firstCharacterRendered = true;
-        console.log('first data received')
-        checkBothRendered();
+        userPowerStats = data.powerstats;
+        checkBothRendered();        
       }
       
       //Renders the second character
@@ -124,35 +127,75 @@
         }
         character2.append(card)
         secondCharacterRendered = true;
-        console.log("second data received")
+        computerPowerStats = data.powerstats;
         checkBothRendered();
       }
       //Checkes both Rendered
       function checkBothRendered() {
-        //If first 2 characters are rendered do something
+        // If first 2 characters are rendered do something
         if (firstCharacterRendered && secondCharacterRendered){
-          console.log('call function to render buttons')
           const startButtonsDiv = $('<div>').addClass('ui vertical buttons')
           const randomizeButton = $('<button>').addClass("ui red basic button").text("RANDOMIZE AGAIN")
           const startGameButton = $("<button>").addClass("ui red basic button").text("START GAME")
           startButtonsDiv.append(randomizeButton, startGameButton)
           $('#renderButtons').append(startButtonsDiv)
           $("#body").removeClass("ui active dimmer")
+          randomizeButton.on("click", randomizeAgain)
           startGameButton.on('click', renderPowerstatButtons)
         }
       }
+
+      // Reloads page to produce two new randomized characters
+      function randomizeAgain () {
+        location.reload();
+      }
+
       function renderPowerstatButtons() {
         $('#renderButtons').empty()
-        const buttonsDiv = $('<div>').addClass('ui vertical buttons')
-        const intelligenceButton = $('<button>').addClass("large ui red basic button").text("Intelligence")
-        const strengthButton = $('<button>').addClass("large ui red basic button").text("Strength")
-        const speedButton = $('<button>').addClass("large ui red basic button").text("Speed")
-        const durabilityButton = $('<button>').addClass("large ui red basic button").text("Durability")
-        const powerButton = $('<button>').addClass("large ui red basic button").text("Power")
+        const buttonsDiv = $('<div>').addClass('ui vertical buttons').attr("id", "powerstatsButtons")
+        const intelligenceButton = $('<button>').addClass("large ui red basic button powerstat").attr("data-intelligence", userPowerStats.intelligence).text("Intelligence")
+        const strengthButton = $('<button>').addClass("large ui red basic button powerstat").attr("data-strength", userPowerStats.strength).text("Strength")
+        const speedButton = $('<button>').addClass("large ui red basic button powerstat").attr("data-speed", userPowerStats.speed).text("Speed")
+        const durabilityButton = $('<button>').addClass("large ui red basic button powerstat").attr("data-durability", userPowerStats.durability).text("Durability")
+        const powerButton = $('<button>').addClass("large ui red basic button powerstat").attr("data-power", userPowerStats.power).text("Power")
         buttonsDiv.append(intelligenceButton, strengthButton, speedButton, durabilityButton, powerButton)
         $('#renderButtons').append(buttonsDiv)
+        console.log(userPowerStats)
+        $('.powerstat').on('click', compareStatsWithComputer)
+      }
+
+      function compareStatsWithComputer(){
+        const powerstatObject = $(this).data()
+        const powerstatArray = Object.entries(powerstatObject)
+        const userAbility = powerstatArray[0][0]
+        const userAbilityValue = powerstatArray[0][1]
+        const computerAbilityValue = computerPowerStats[userAbility]
+        if (userAbilityValue < computerAbilityValue){
+          console.log("user loses")
+          computerWins();
+        } else if (userAbility > computerAbilityValue){
+          console.log("user wins")
+          userWins()
+        } else {
+          console.log("tie")
+          tiePoint()
+        }
+      }
+
+      function userWins() {
+        $("#character1").transition("jiggle");
+      }
+
+      function computerWins() {
+        $("#character2").transition("jiggle");
+      }
+
+      function tiePoint() {
+        $("#character1").transition("jiggle");
+        $("#character2").transition("jiggle");
 
       }
+
       //Generates the the ajax calls
       function generateAjaxOptions(universe, randomCharacterId){
         let url
@@ -163,7 +206,6 @@
         } else{
           //ERROR HANDLING
         }
-        console.log(url + randomCharacterId)
         const ajaxOptions = {
           url: CORS_ANYWHERE_URL + url + randomCharacterId,
           method: "GET",
@@ -177,5 +219,7 @@
       $.ajax(generateAjaxOptions(universe, randomCharacterId1)).then(renderFirstCharacter);
       $.ajax(generateAjaxOptions(universe, randomCharacterId2)).then(renderSecondCharacter)
     </script>
+        <script src="assets/js/transition.min.js"></script>
+
   </body>
 </html>
