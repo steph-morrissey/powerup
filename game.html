@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="assets/css/semantic.min.css" />
+    <link rel="stylesheet" type="text/css" href="assets/css/icon.min.css" />
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
     <script
       src="https://code.jquery.com/jquery-3.1.1.min.js"
@@ -14,7 +15,10 @@
   </head>
   <body id="body" class="ui active dimmer">
     <div class="ui large text loader">Loading</div>
-    <h1 style="background-color: black; color:blue;font-size:24px;" class="blink ui center aligned segment">PowerUP!</h1>
+    <div>
+      <h1 id="powerUpLogo" class="blink ui center aligned segment">PowerUP!</h1>
+    </div>
+    <div class="ui center aligned grid"id="exitGame"></div>
     <div class="ui center aligned grid">
       <div class="ui center aligned row">
         <div id="character1" class="six wide column">
@@ -27,13 +31,14 @@
       
         <div id="character2" class="six wide column">
         </div>
+   
 
 <!------Game End Screen----->
         <div id="display" class="ui one column stackable center aligned page grid display">
           <div class="column twelve wide">
               <div class="ui centered card">
                   <div class="image">
-                    <img src="/images/avatar2/large/elyse.png">
+                    <img src="">
                   </div>
                   <div class="content">
                     <a class="header">Elyse</a>
@@ -63,6 +68,11 @@
       //User power stats
       let userPowerStats;
       let computerPowerStats;
+      // Returns user to start screen if Exit Game button is clicked
+      function startScreen() {
+        location.href = "index.html"
+      }
+
       //Gets 2 random ID's
       function getRandomCharacterNumber(universe){
         let range
@@ -155,14 +165,17 @@
       function checkBothRendered() {
         // If first 2 characters are rendered do something
         if (firstCharacterRendered && secondCharacterRendered){
+          const exitGame = $("<button>").addClass("ui center aligned red basic button").text("EXIT GAME")
+          $("#exitGame").append(exitGame)
           const startButtonsDiv = $('<div>').addClass('ui vertical buttons')
           const randomizeButton = $('<button>').addClass("ui red basic button").text("RANDOMIZE AGAIN")
-          const startGameButton = $("<button>").addClass("ui red basic button").text("START GAME")
+          const startGameButton = $("<button>").addClass("ui olive basic button").text("START GAME")
           startButtonsDiv.append(randomizeButton, startGameButton)
           $('#renderButtons').append(startButtonsDiv)
           $("#body").removeClass("ui active dimmer")
           randomizeButton.on("click", randomizeAgain)
           startGameButton.on('click', renderPowerstatButtons)
+          exitGame.on("click", startScreen)
         }
       }
 
@@ -181,7 +194,8 @@
         const powerButton = $('<button>').addClass("large ui red basic button powerstat").attr("data-power", userPowerStats.power).text("Power")
         buttonsDiv.append(intelligenceButton, strengthButton, speedButton, durabilityButton, powerButton)
         $('#renderButtons').append(buttonsDiv)
-        console.log(userPowerStats)
+
+
         $('.powerstat').on('click', compareStatsWithComputer)
       }
 
