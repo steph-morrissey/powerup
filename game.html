@@ -31,6 +31,7 @@
 
           <div id="character2" class="six wide column"></div>
         </div>
+        <div id="healthBar" class="ui center aligned row"></div>
       </div>
     </section>
     <section id="finalScore" class="display">
@@ -143,6 +144,26 @@
         );
       }
 
+      function generateHealthBar(playerType) {
+        const healthBarColumn = $("<div>").addClass("ui six wide column");
+        const progressSuccess = $("<div>").attr({
+          class: "ui progress success",
+          "data-percent": "100",
+        });
+        const progressBar = $("<div>").attr({
+          class: "bar playerType",
+          style: "transition-duration: 300ms; width: 100%;",
+        });
+        const progressText = $("<div>")
+          .attr({
+            class: "ui progress yellow header",
+            id: "characterType",
+          })
+          .text(playerType);
+        return healthBarColumn.append(
+          progressSuccess.append(progressBar, progressText)
+        );
+      }
       //Renders the first character
       function renderFirstCharacter(data) {
         const character1 = $("#character1");
@@ -154,6 +175,7 @@
         } else {
           //ERROR HANDLING
         }
+        $("#healthBar").append(generateHealthBar("PLAYER"));
         character1.append(card);
         character1.addClass("character1Card");
         firstCharacterRendered = true;
@@ -172,9 +194,9 @@
         } else {
           //ERROR HANDLING
         }
+        $("#healthBar").append(generateHealthBar("CPU"));
         character2.append(card);
         character2.addClass("character2Card");
-
         secondCharacterRendered = true;
         computerPowerStats = data.powerstats;
         checkBothRendered();
@@ -278,6 +300,8 @@
       }
 
       function compareStatsWithComputer() {
+        $("#healthBar").empty();
+
         const powerstatObject = $(this).data();
         const powerstatArray = Object.entries(powerstatObject);
         const userAbility = powerstatArray[0][0];
@@ -294,6 +318,8 @@
       }
 
       function compareAbilityWithComputer() {
+        $("#healthBar").empty();
+
         const powerstatObject = $(this).data();
         const powerstatArray = Object.entries(powerstatObject);
         const userAbility = powerstatArray[0][0];
@@ -321,11 +347,27 @@
         getRandomCharactersFromApi();
       }
 
+      function playerHealth(playerHealthValue) {
+        let health = 100;
+        switch (playerHealthValue) {
+          case 1:
+            return (health = 75);
+          case 2:
+            return (health = 50);
+          case 3:
+            return (health = 25);
+          case 4:
+            return (health = 0);
+        }
+      }
+
       function userWins() {
         $("#character1").transition("vertical flip");
         $("#character1").transition("vertical flip");
         userCounter++;
-        if (userCounter == 3) {
+        const healthBar = playerHealth(userCounter);
+        $(".player").attr("style", "width:" + healthBar + "%");
+        if (userCounter == 4) {
         }
       }
 
@@ -333,7 +375,9 @@
         $("#character2").transition("vertical flip");
         $("#character2").transition("vertical flip");
         computerCounter++;
-        if (computerCounter == 3) {
+        const healthBar = playerHealth(userCounter);
+        $(".cpu").attr("style", "width:" + healthBar + "%");
+        if (computerCounter == 4) {
           $("#mainGameScreen").addClass("display");
           $("#finalScore").removeClass("display");
         }
