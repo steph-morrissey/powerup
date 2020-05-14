@@ -87,6 +87,7 @@
         const randomCharacterNumber = Math.floor(Math.random() * range);
         return randomCharacterNumber;
       }
+
       //getUniverse gets universe set by the user and sets the queryString to that universe
       function getUniverse() {
         const queryString = window.location.search;
@@ -95,6 +96,7 @@
         //2 possible values pokemon or superhero
         return universe;
       }
+
       //Generates the superhero card
       function generateSuperheroCard(data) {
         const characterCardUpperDiv = $("<div>").addClass("ui fluid");
@@ -116,23 +118,31 @@
           )
         );
       }
+
       //Generates the pokemon card
       function generatePokemonCard(data) {
+        const pokemonSpriteName = data.name;
         const characterCardUpperDiv = $("<div>").addClass("card");
         const characterImageSecondDiv = $("<div>").addClass("image");
         const characterImage = $("<img>").attr({
           src: data.sprites.front_default,
           alt: data.name,
         });
-        const characterContent = $("<div>").addClass("content");
-        const characterName = $("<div>").addClass("header").text(data.name);
+        const characterContent = $("<div>").addClass("ui segment content");
+        const characterName = $("<div>")
+          .addClass("ui yellow header")
+          .text(pokemonSpriteName.toUpperCase());
+        const characterAbility = $("<div>")
+          .addClass("ui green header pokemonAbility")
+          .text(data.abilities[0].ability.name);
         return characterCardUpperDiv.append(
           characterImageSecondDiv.append(
             characterImage,
-            characterContent.append(characterName)
+            characterContent.append(characterName, characterAbility)
           )
         );
       }
+
       //Renders the first character
       function renderFirstCharacter(data) {
         const character1 = $("#character1");
@@ -170,7 +180,7 @@
         checkBothRendered();
       }
 
-      //Checkes both Rendered
+      //Checks both Rendered
       function checkBothRendered() {
         // If first 2 characters are rendered do something
         if (firstCharacterRendered && secondCharacterRendered) {
@@ -248,6 +258,7 @@
 
       function renderAbilitiesButtons() {
         $("#renderButtons").empty();
+        $(".pokemonAbility").transition("flash");
         const buttonsDiv = $("<div>")
           .addClass("ui vertical buttons")
           .attr("id", "powerstatsButtons");
