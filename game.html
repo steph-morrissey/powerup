@@ -87,6 +87,7 @@
         const randomCharacterNumber = Math.floor(Math.random() * range);
         return randomCharacterNumber;
       }
+
       //getUniverse gets universe set by the user and sets the queryString to that universe
       function getUniverse() {
         const queryString = window.location.search;
@@ -95,6 +96,7 @@
         //2 possible values pokemon or superhero
         return universe;
       }
+
       //Generates the superhero card
       function generateSuperheroCard(data) {
         const characterCardUpperDiv = $("<div>").addClass("ui fluid");
@@ -116,23 +118,31 @@
           )
         );
       }
+
       //Generates the pokemon card
       function generatePokemonCard(data) {
+        const pokemonSpriteName = data.name;
         const characterCardUpperDiv = $("<div>").addClass("card");
         const characterImageSecondDiv = $("<div>").addClass("image");
         const characterImage = $("<img>").attr({
           src: data.sprites.front_default,
           alt: data.name,
         });
-        const characterContent = $("<div>").addClass("content");
-        const characterName = $("<div>").addClass("header").text(data.name);
+        const characterContent = $("<div>").addClass("ui segment content");
+        const characterName = $("<div>")
+          .addClass("ui yellow header")
+          .text(pokemonSpriteName.toUpperCase());
+        const characterAbility = $("<div>")
+          .addClass("ui green header pokemonAbility")
+          .text(data.abilities[0].ability.name);
         return characterCardUpperDiv.append(
           characterImageSecondDiv.append(
             characterImage,
-            characterContent.append(characterName)
+            characterContent.append(characterName, characterAbility)
           )
         );
       }
+
       //Renders the first character
       function renderFirstCharacter(data) {
         const character1 = $("#character1");
@@ -169,11 +179,18 @@
         computerPowerStats = data.powerstats;
         checkBothRendered();
       }
-      //Checkes both Rendered
+
+      //Checks both Rendered
       function checkBothRendered() {
         // If first 2 characters are rendered do something
         if (firstCharacterRendered && secondCharacterRendered) {
-          renderPowerstatButtons();
+          if (universe === "superhero") {
+            renderPowerstatButtons();
+          }
+
+          if (universe === "pokemon") {
+            renderAbilitiesButtons();
+          }
         }
       }
 
@@ -239,6 +256,27 @@
         $(".powerstat").on("click", compareStatsWithComputer);
       }
 
+      function renderAbilitiesButtons() {
+        $("#renderButtons").empty();
+        $(".pokemonAbility").transition("flash");
+        const userAttackAbilityNumber = Math.floor(Math.random() * 100);
+        const userDefendAbilityNumber = Math.floor(Math.random() * 100);
+        const buttonsDiv = $("<div>")
+          .addClass("ui vertical buttons")
+          .attr("id", "powerstatsButtons");
+        const attackButton = $("<button>")
+          .addClass("large ui red basic button powerstat")
+          .attr("data-attack", userAttackAbilityNumber)
+          .text("Attack");
+        const defendButton = $("<button>")
+          .addClass("large ui red basic button powerstat")
+          .attr("data-defend", userDefendAbilityNumber)
+          .text("Defend");
+        buttonsDiv.append(attackButton, defendButton);
+        $("#renderButtons").append(buttonsDiv);
+        $(".powerstat").on("click", compareAbilityWithComputer);
+      }
+
       function compareStatsWithComputer() {
         const powerstatObject = $(this).data();
         const powerstatArray = Object.entries(powerstatObject);
@@ -246,31 +284,55 @@
         const userAbilityValue = powerstatArray[0][1];
         const computerAbilityValue = computerPowerStats[userAbility];
         if (userAbilityValue < computerAbilityValue) {
-          console.log("user loses");
           computerWins();
         } else if (userAbility > computerAbilityValue) {
-          console.log("user wins");
           userWins();
         } else {
-          console.log("tie");
           tiePoint();
         }
         getRandomCharactersFromApi();
       }
 
+      function compareAbilityWithComputer() {
+        const powerstatObject = $(this).data();
+        const powerstatArray = Object.entries(powerstatObject);
+        const userAbility = powerstatArray[0][0];
+        const userAbilityValue = powerstatArray[0][1];
+        const computerDefendValue = Math.floor(Math.random() * 100);
+        const computerAttackValue = Math.floor(Math.random() * 100);
+        if (userAbility === "attack") {
+          if (userAbilityValue > computerDefendValue) {
+            userWins();
+          } else if (userAbilityValue < computerDefendValue) {
+            computerWins();
+          } else {
+            tiePoint();
+          }
+        }
+        if (userAbility === "defend") {
+          if (userAbilityValue > computerAttackValue) {
+            userWins();
+          } else if (userAbilityValue < computerAttackValue) {
+            computerWins();
+          } else {
+            tiePoint();
+          }
+        }
+        getRandomCharactersFromApi();
+      }
+
       function userWins() {
-        $("#character1").transition("jiggle");
+        $("#character1").transition("vertical flip");
+        $("#character1").transition("vertical flip");
         userCounter++;
-        console.log("user" + userCounter);
         if (userCounter == 3) {
-          console.log("Enemy defeated..");
         }
       }
 
       function computerWins() {
-        $("#character2").transition("jiggle");
+        $("#character2").transition("vertical flip");
+        $("#character2").transition("vertical flip");
         computerCounter++;
-        console.log("computer" + computerCounter);
         if (computerCounter == 3) {
           $("#mainGameScreen").addClass("display");
           $("#finalScore").removeClass("display");
@@ -278,8 +340,10 @@
       }
 
       function tiePoint() {
-        $("#character1").transition("jiggle");
-        $("#character2").transition("jiggle");
+        $("#character1").transition("vertical flip");
+        $("#character2").transition("vertical flip");
+        $("#character1").transition("vertical flip");
+        $("#character2").transition("vertical flip");
       }
 
       //Generates the the ajax calls
