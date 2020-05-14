@@ -259,16 +259,18 @@
       function renderAbilitiesButtons() {
         $("#renderButtons").empty();
         $(".pokemonAbility").transition("flash");
+        const userAttackAbilityNumber = Math.floor(Math.random() * 100);
+        const userDefendAbilityNumber = Math.floor(Math.random() * 100);
         const buttonsDiv = $("<div>")
           .addClass("ui vertical buttons")
           .attr("id", "powerstatsButtons");
         const attackButton = $("<button>")
           .addClass("large ui red basic button powerstat")
-          .attr("data-attack", "90")
+          .attr("data-attack", userAttackAbilityNumber)
           .text("Attack");
         const defendButton = $("<button>")
           .addClass("large ui red basic button powerstat")
-          .attr("data-defend", "20")
+          .attr("data-defend", userDefendAbilityNumber)
           .text("Defend");
         buttonsDiv.append(attackButton, defendButton);
         $("#renderButtons").append(buttonsDiv);
@@ -296,8 +298,8 @@
         const powerstatArray = Object.entries(powerstatObject);
         const userAbility = powerstatArray[0][0];
         const userAbilityValue = powerstatArray[0][1];
-        const computerDefendValue = 60;
-        const computerAttackValue = 30;
+        const computerDefendValue = Math.floor(Math.random() * 100);
+        const computerAttackValue = Math.floor(Math.random() * 100);
         if (userAbility === "attack") {
           if (userAbilityValue > computerDefendValue) {
             userWins();
@@ -320,14 +322,16 @@
       }
 
       function userWins() {
-        $("#character1").transition("jiggle");
+        $("#character1").transition("vertical flip");
+        $("#character1").transition("vertical flip");
         userCounter++;
         if (userCounter == 3) {
         }
       }
 
       function computerWins() {
-        $("#character2").transition("jiggle");
+        $("#character2").transition("vertical flip");
+        $("#character2").transition("vertical flip");
         computerCounter++;
         if (computerCounter == 3) {
           $("#mainGameScreen").addClass("display");
@@ -336,8 +340,10 @@
       }
 
       function tiePoint() {
-        $("#character1").transition("jiggle");
-        $("#character2").transition("jiggle");
+        $("#character1").transition("vertical flip");
+        $("#character2").transition("vertical flip");
+        $("#character1").transition("vertical flip");
+        $("#character2").transition("vertical flip");
       }
 
       //Generates the the ajax calls
