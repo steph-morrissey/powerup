@@ -201,10 +201,10 @@
         $("#exitGame").append(exitGame);
         const startButtonsDiv = $("<div>").addClass("ui vertical buttons");
         const randomizeButton = $("<button>")
-          .addClass("ui red basic button")
+          .addClass("ui yellow basic button")
           .text("RANDOMIZE AGAIN");
         const startGameButton = $("<button>")
-          .addClass("ui olive basic button startButton")
+          .addClass("ui green basic button startButton")
           .text("START GAME");
         startButtonsDiv.append(randomizeButton, startGameButton);
         $("#renderButtons").append(startButtonsDiv);
@@ -225,29 +225,29 @@
           .addClass("ui vertical buttons")
           .attr("id", "powerstatsButtons");
         const intelligenceButton = $("<button>")
-          .addClass("large ui red basic button powerstat")
+          .addClass("large ui teal basic button powerstat")
           .attr({
             "data-intelligence": userPowerStats.intelligence,
             id: "powerstat",
           })
           .text("Intelligence");
         const strengthButton = $("<button>")
-          .addClass("large ui red basic button powerstat")
+          .addClass("large ui blue basic button powerstat")
           .attr({ "data-strength": userPowerStats.strength, id: "powerstat" })
           .text("Strength");
         const speedButton = $("<button>")
-          .addClass("large ui red basic button powerstat")
+          .addClass("large ui purple basic button powerstat")
           .attr({ "data-speed": userPowerStats.speed, id: "powerstat" })
           .text("Speed");
         const durabilityButton = $("<button>")
-          .addClass("large ui red basic button powerstat")
+          .addClass("large ui pink basic button powerstat")
           .attr({
             "data-durability": userPowerStats.durability,
             id: "powerstat",
           })
           .text("Durability");
         const powerButton = $("<button>")
-          .addClass("large ui red basic button powerstat")
+          .addClass("large ui olive basic button powerstat")
           .attr({ "data-power": userPowerStats.power, id: "powerstat" })
           .text("Power");
         buttonsDiv.append(
