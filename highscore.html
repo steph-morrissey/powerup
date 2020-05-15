@@ -11,30 +11,45 @@
 
 <body>
     <h1 id="powerUpLogo" class="blink ui center aligned segment">
-        PowerUP!
+ -- GAME OVER --
     </h1>
 
-    <div class="ui relaxed grid">
-        <div class="three column row">
-            <div id="gameOverText" class="column"><p>GAME OVER!</p></div>
-            <div id="highScoreText" class="column"><p>High Score</p></div>
-            <div id="highScoreDiv" class="column"></div>
+
+
+    <div class="ui center aligned grid">
+        <div class="ui center aligned row">
+          <div class="eight wide column">
+            <div class="ui right floated">
+              <div class="image">
+                <a href="game.html?universe=superhero" class="ui medium image">
+                  <img
+                    id="superheroCard"
+                    src="assets/images/superhero_cover_image.jpg"
+                    alt="Superhero cover photo image"
+                  />
+                </a>
+              </div>
+              <div id="descriptionFrame" class="content">
+                <a style="color: red; font-size: 24px;" class="header"
+                  >Winner/Loser Player Card</a>
+              </div>
+            </div>
+          </div>
+          <div class="eight wide column">
+            <div class="ui left floated">
+                <p class="bodyText">You defeated 'x' opponents. Please enter your name below.</p>
+                <div class="ui action input">
+                    <input type="text" placeholder="Put your name here...">
+                    <button class="ui inverted violet button">Save</button>
+                  </div>
+                  <div>
+                      <h2 class="bodyText">High Scores:</h2>
+                  </div>
+            </div>
+          </div>
         </div>
-    </div>
-    <div class="ui relaxed grid">
-        <div class="three column row">
-            <div class="column"></div>
-            <div class="column"></div>
-            <div class="column"></div>
-        </div>
-    </div>
-    <div class="ui relaxed grid">
-        <div class="three column row">
-            <div class="column"></div>
-            <div class="column"></div>
-            <div class="column"></div>
-        </div>
-    </div>
+      </div>
+
 
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"
         integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>

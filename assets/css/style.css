@@ -2,6 +2,11 @@ body {
   background-color: black;
 }
 
+.bodyText {
+  color: #f8f8ff;
+  margin-bottom: 100px;
+}
+
 #powerUpLogo {
   background-color: #000000;
   color: #3242b6;
