@@ -1,4 +1,6 @@
+/* body styling */
 body {
+
   background-color: #353131;
   font-size: 24px;
 }
@@ -19,25 +21,45 @@ body {
 .ui .button{
   padding-bottom: 10px;
 }
+
 .display {
   display: none;
 }
+
+/* character card styling */
 #superheroCard {
   padding: 3px;
-  border: 3px solid whitesmoke;
-  background-color: yellow;
+  border: 3px solid #f5f5f5;
+  background-color: #fffa3d;
 }
 
 .character1Card {
   padding: 2px;
-  border: 3px solid lightseagreen;
+  border: 3px solid #00f9ff;
 }
 
 .character2Card {
   padding: 2px;
-  border: 3px solid purple;
+  border: 3px solid #ab20fd;
 }
 
+/* powerstat buttons styling */
+.powerstat {
+  margin-bottom: 20px;
+}
+/* padding for Exit Game button */
+#exitGame {
+  margin-top: 10px;
+}
+
+/* powerUP logo styling */
+#powerUpLogo {
+  background-color: #000000;
+  color: #3242b6;
+  font-size: 24px;
+}
+
+/* Blink effect for PowerUp logo
 /* @group Blink */
 .blink {
   -webkit-animation: blink 0.75s linear infinite;
