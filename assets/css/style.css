@@ -1,14 +1,8 @@
 /* body styling */
 body {
-
   background-color: #353131;
-  font-size: 24px;
-}
-
-#powerUpLogo {
-  background-color: #908a99;
-  border-bottom: 5px solid #4f43ae;
-  font-size: 24px;
+  font-size: 1.2rem;
+  color: #cec9cc;
 }
 
 #exitGame {
@@ -54,11 +48,13 @@ body {
 
 /* powerUP logo styling */
 #powerUpLogo {
-  background-color: #000000;
-  color: #3242b6;
+  background-color: #908a99;
+  border-bottom: 5px solid #4f43ae;
   font-size: 24px;
 }
-
+summary{
+  cursor: pointer;
+}
 /* Blink effect for PowerUp logo
 /* @group Blink */
 .blink {
