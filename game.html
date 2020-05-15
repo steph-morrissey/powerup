@@ -204,13 +204,13 @@
           .addClass("ui red basic button")
           .text("RANDOMIZE AGAIN");
         const startGameButton = $("<button>")
-          .addClass("ui olive basic button")
+          .addClass("ui olive basic button startButton")
           .text("START GAME");
         startButtonsDiv.append(randomizeButton, startGameButton);
         $("#renderButtons").append(startButtonsDiv);
         $("#body").removeClass("ui active dimmer");
         randomizeButton.on("click", randomizeAgain);
-        startGameButton.on("click", getRandomCharactersFromApi);
+        startGameButton.on("click", preventMultipleClicks);
         exitGame.on("click", startScreen);
       }
 
@@ -226,23 +226,29 @@
           .attr("id", "powerstatsButtons");
         const intelligenceButton = $("<button>")
           .addClass("large ui red basic button powerstat")
-          .attr("data-intelligence", userPowerStats.intelligence)
+          .attr({
+            "data-intelligence": userPowerStats.intelligence,
+            id: "powerstat",
+          })
           .text("Intelligence");
         const strengthButton = $("<button>")
           .addClass("large ui red basic button powerstat")
-          .attr("data-strength", userPowerStats.strength)
+          .attr({ "data-strength": userPowerStats.strength, id: "powerstat" })
           .text("Strength");
         const speedButton = $("<button>")
           .addClass("large ui red basic button powerstat")
-          .attr("data-speed", userPowerStats.speed)
+          .attr({ "data-speed": userPowerStats.speed, id: "powerstat" })
           .text("Speed");
         const durabilityButton = $("<button>")
           .addClass("large ui red basic button powerstat")
-          .attr("data-durability", userPowerStats.durability)
+          .attr({
+            "data-durability": userPowerStats.durability,
+            id: "powerstat",
+          })
           .text("Durability");
         const powerButton = $("<button>")
           .addClass("large ui red basic button powerstat")
-          .attr("data-power", userPowerStats.power)
+          .attr({ "data-power": userPowerStats.power, id: "powerstat" })
           .text("Power");
         buttonsDiv.append(
           intelligenceButton,
@@ -253,7 +259,7 @@
         );
         $("#renderButtons").append(buttonsDiv);
 
-        $(".powerstat").on("click", compareStatsWithComputer);
+        $(".powerstat").on("click", preventMultipleClicks);
       }
 
       function renderAbilitiesButtons() {
@@ -265,20 +271,36 @@
           .addClass("ui vertical buttons")
           .attr("id", "powerstatsButtons");
         const attackButton = $("<button>")
-          .addClass("large ui red basic button powerstat")
-          .attr("data-attack", userAttackAbilityNumber)
+          .addClass("large ui red basic button abilityStat")
+          .attr({ "data-attack": userAttackAbilityNumber, id: "abilityStat" })
           .text("Attack");
         const defendButton = $("<button>")
-          .addClass("large ui red basic button powerstat")
-          .attr("data-defend", userDefendAbilityNumber)
+          .addClass("large ui red basic button abilityStat")
+          .attr({ "data-defend": userDefendAbilityNumber, id: "abilityStat" })
           .text("Defend");
         buttonsDiv.append(attackButton, defendButton);
         $("#renderButtons").append(buttonsDiv);
-        $(".powerstat").on("click", compareAbilityWithComputer);
+        $(".abilityStat").on("click", preventMultipleClicks);
       }
 
-      function compareStatsWithComputer() {
-        const powerstatObject = $(this).data();
+      // Prevents buttons from being clicked multiple times which would trigger another API call
+      function preventMultipleClicks() {
+        const buttonObjectAttribute = $(this).data();
+        if ($(this).attr("id") == "powerstat") {
+          $(".powerstat").attr("disabled", true);
+          compareStatsWithComputer(buttonObjectAttribute);
+        } else if ($(this).attr("id") == "abilityStat") {
+          $(".powerstat").attr("disabled", true);
+          compareAbilityWithComputer(buttonObjectAttribute);
+        } else {
+          $(".startButton").attr("disabled", true);
+          getRandomCharactersFromApi();
+        }
+        $(".powerstat").attr("disabled", false);
+      }
+
+      function compareStatsWithComputer(buttonObjectAttribute) {
+        const powerstatObject = buttonObjectAttribute;
         const powerstatArray = Object.entries(powerstatObject);
         const userAbility = powerstatArray[0][0];
         const userAbilityValue = powerstatArray[0][1];
@@ -293,8 +315,8 @@
         getRandomCharactersFromApi();
       }
 
-      function compareAbilityWithComputer() {
-        const powerstatObject = $(this).data();
+      function compareAbilityWithComputer(buttonObjectAttribute) {
+        const powerstatObject = buttonObjectAttribute;
         const powerstatArray = Object.entries(powerstatObject);
         const userAbility = powerstatArray[0][0];
         const userAbilityValue = powerstatArray[0][1];
