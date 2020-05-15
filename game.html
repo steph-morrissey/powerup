@@ -348,8 +348,36 @@
         }
         getRandomCharactersFromApi();
       }
+
+      function playerHealth(player,playerHealthValue) {
+        let health = 100;
+        console.log(playerHealthValue)
+        switch (playerHealthValue) {
+          case 1:
+            health = 75
+            setHealthValue(player, health);
+            console.log(health)
+            break
+          case 2:
+            health = 50
+            setHealthValue(player, health);
+            console.log(health)
+            break
+          case 3:
+            health = 25
+            setHealthValue(player, health);
+            console.log(health)
+            break
+          case 4:
+            health = 0
+            setHealthValue(player, health);
+            console.log(health)
+            break
+        }
+      }
+
       //local storage health
-      function healthInLocalStorage(userHealth, cpuHealth, userHealthValue, cpuHealthValue){
+      function healthInLocalStorage(userHealthValue,cpuHealthValue){
         let health = {
           userHealth : userHealthValue,
           cpuHealth : cpuHealthValue
@@ -368,32 +396,40 @@
 
       function setHealthValue(player, health){
         let healthValue = JSON.parse(localStorage.getItem("health"))
-        console.log(healthValue)
-        healthValue.player = health
+        console.log("UserHealth " + healthValue.userHealth)
+        if(player === "userHealth"){
+          healthValue.userHealth = health
+          console.log("UserHealth " + healthValue.userHealth)
+          console.log("Math " + healthValue.userHealth)
+          localStorage.setItem("health", JSON.stringify({userHealth}= health))
+        }else if(player === "cpuHealth"){
+          healthValue.cpuHealth = health
+          localStorage.setItem("health", JSON.stringify({cpuHealth}= health))
+        }
+        
       }
       function playerHealth(player,playerHealthValue) {
         let health = 100;
         console.log(player)
-        healthInLocalStorage("userHealth", "cpuHealth", 100, 100);
         switch (playerHealthValue) {
           case 1:
             health = 75
-            healthInLocalStorage(player, player, health, health);
+            setHealthValue(player, health);
             console.log(health)
             break
           case 2:
             health = 50
-            healthInLocalStorage(player, player, health, health);
+            setHealthValue(player, health);
             console.log(health)
             break
           case 3:
             health = 25
-            healthInLocalStorage(player, player, health, health);
+            setHealthValue(player, health);
             console.log(health)
             break
           case 4:
             health = 0
-            healthInLocalStorage(player, player, health, health);
+            setHealthValue(player, health);
             console.log(health)
             break
         }
@@ -452,7 +488,7 @@
         $("#character1").empty();
         $("#character2").empty();
         
-        healthInLocalStorage("userHealth", "cpuHealth", 100,100)
+        healthInLocalStorage(100,100)
         //Stores the random character ID into randomCharacterId's for a given universe
         const randomCharacterId1 = getRandomCharacterNumber(universe);
         const randomCharacterId2 = getRandomCharacterNumber(universe);
