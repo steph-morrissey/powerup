@@ -349,32 +349,6 @@
         getRandomCharactersFromApi();
       }
 
-      function playerHealth(player,playerHealthValue) {
-        let health = 100;
-        console.log(playerHealthValue)
-        switch (playerHealthValue) {
-          case 1:
-            health = 75
-            setHealthValue(player, health);
-            console.log(health)
-            break
-          case 2:
-            health = 50
-            setHealthValue(player, health);
-            console.log(health)
-            break
-          case 3:
-            health = 25
-            setHealthValue(player, health);
-            console.log(health)
-            break
-          case 4:
-            health = 0
-            setHealthValue(player, health);
-            console.log(health)
-            break
-        }
-      }
 
       //local storage health
       function healthInLocalStorage(userHealthValue,cpuHealthValue){
@@ -396,21 +370,12 @@
 
       function setHealthValue(player, health){
         let healthValue = JSON.parse(localStorage.getItem("health"))
-        console.log("UserHealth " + healthValue.userHealth)
-        if(player === "userHealth"){
-          healthValue.userHealth = health
-          console.log("UserHealth " + healthValue.userHealth)
-          console.log("Math " + healthValue.userHealth)
-          localStorage.setItem("health", JSON.stringify({userHealth}= health))
-        }else if(player === "cpuHealth"){
-          healthValue.cpuHealth = health
-          localStorage.setItem("health", JSON.stringify({cpuHealth}= health))
-        }
+        healthValue[player]=health
+        localStorage.setItem("health", JSON.stringify(healthValue))
         
       }
       function playerHealth(player,playerHealthValue) {
         let health = 100;
-        console.log(player)
         switch (playerHealthValue) {
           case 1:
             health = 75
@@ -488,7 +453,7 @@
         $("#character1").empty();
         $("#character2").empty();
         
-        healthInLocalStorage(100,100)
+        
         //Stores the random character ID into randomCharacterId's for a given universe
         const randomCharacterId1 = getRandomCharacterNumber(universe);
         const randomCharacterId2 = getRandomCharacterNumber(universe);
@@ -499,7 +464,7 @@
           renderSecondCharacter
         );
       }
-
+      healthInLocalStorage(100,100)
       renderGameControl();
 
       //Firework Celebration
