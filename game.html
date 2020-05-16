@@ -4,57 +4,69 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="assets/css/semantic.min.css" />
-    <link rel="stylesheet" type="text/css" href="assets/css/icon.min.css" />
     <link rel="stylesheet" type="text/css" href="assets/css/style.css" />
+    <!-----JQuery Script----->
     <script
       src="https://code.jquery.com/jquery-3.1.1.min.js"
       integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
       crossorigin="anonymous"
     ></script>
+    <!-----Title----->
     <title>Game Screen</title>
   </head>
-  <body id="body">
-    <div class="ui large text loader">Loading</div>
-    <div>
-      <h1 id="powerUpLogo" class="ui center aligned header" style="color: #cec9cc; padding: 10px"><span class="blink">PowerUP!</span></h1>
-    </div>
+  <!-----Body of the game screen----->
+  <body>
+    <!-----Header, name of the game with a blinking animation----->
+    <h1 id="powerUpLogo" class="ui center aligned header">
+      <span class="blink">PowerUP!</span>
+    </h1>
+    <!-----Main Game Screen section where all the cards are----->
     <section id="mainGameScreen">
+      <!-----Exit Game Button appended here----->
       <div class="ui center aligned grid" id="exitGame"></div>
+      <!-----Container for the game screen----->
       <div class="ui center aligned grid">
         <div class="ui center aligned row">
+          <!-----Character 1 appended here----->
           <div id="character1" class="six wide column"></div>
-
+          <!-----Render the buttons for the game----->
           <div
             id="renderButtons"
-            class="ui middle aligned four wide column"
-          ></div>
-
+            class="ui middle aligned four wide column">
+          </div>
+          <!-----Character 2 appended here----->
           <div id="character2" class="six wide column"></div>
         </div>
-        <div id="healthBar" class="ui center aligned row"></div>
       </div>
     </section>
+    <!-----Game End Screen----->
     <section id="finalScore" class="display">
-      <!------Game End Screen----->
       <div class="ui one column stackable center aligned page grid display">
         <div class="column twelve wide">
           <div class="ui centered card">
+            <!------Game Over Screen----->
             <div class="content">
-              <h3>GAME OVER</h3>
-            </div>
-            <div id="scoreSaveInput" class="ui action input">
-              <input type="text" placeholder="Enter your initials here..." />
-              <button id="scoreSaveButton" class="ui red button">
-                Save
+              <h3 style="color: #130f11">GAME OVER</h3>
+              <!------End Score Input Screen----->
+              <div class="ui icon input" >
+                <input id="scoreSaveInput" type="text" placeholder="Enter your initials here..." />
+              </div>
+              <button id="scoreSaveButton" class="ui red button" style="width: 100%">
+                  Save
               </button>
             </div>
           </div>
         </div>
       </div>
+      <!------Animation from anime.js----->
       <canvas class="fireworks"></canvas>
     </section>
-
+    <script>
+     
+    </script>
+    <!-----Transition Script----->
     <script src="assets/js/transition.min.js"></script>
+    <!-----Our App Script----->
     <script src="assets/js/script.js"></script>
   </body>
 </html>

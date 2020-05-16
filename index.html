@@ -3,29 +3,38 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-----CSS link tags----->
     <link rel="stylesheet" type="text/css" href="assets/css/semantic.min.css" />
     <link rel="stylesheet" type="text/css" href="assets/css/style.css" />
     <title>Power Up Game</title>
   </head>
+  <!-----Body of the home screen----->
   <body>
-    <h1 id="powerUpLogo" class="ui center aligned header" style="color: #cec9cc; padding: 10px">
+
+    <!-----Header, name of the game with a blinking animation----->
+    <h1 id="powerUpLogo" class="ui center aligned header">
       <span class="blink">PowerUP!</span>
-    </h1>
-    <div class="ui center aligned grid">
+    </h1>    
+    <!-----Center grid----->
+    <div class="ui center aligned grid"> 
+    <!-----Center Row----->
       <div class="ui center aligned row">
-        
+      <!-----First 8 wide column containing the superhero card----->
         <div class="eight wide column">
           <div class="ui right floated">
+            <!-----Image for the superhero card----->
             <div class="image">
+              <!-----Adds the universe query into the URL, adds the superhero query into it----->
               <a href="game.html?universe=superhero" class="ui medium image">
+                <!-----Static image from the asset folder----->
                 <img
                   id="superheroCard"
                   src="assets/images/superhero_cover_image.jpg"
                   alt="Superhero cover photo image"
                 />
               </a>
-            </div>
-
+            </div> 
+            <!-----A description for the superhero game----->
             <div id="descriptionFrame" class="ui red content">
               <a class="ui red header">Superhero</a>
               <details>
@@ -57,14 +66,17 @@
                 </div>
                 <div>- See how many SuperHeros you can defeat!!</div>
               </details>
-
             </div>
           </div>
         </div>
+        <!-----Second 8 wide column containing the pokemon card----->
         <div class="eight wide column">
           <div class="ui left floated">
+            <!-----Image for the pokemon card----->
             <div class="image">
+              <!-----Adds the universe query into the URL, adds the pokemon query into it----->
               <a href="game.html?universe=pokemon" class="ui medium image">
+                <!-----Static image from the asset folder----->
                 <img
                   id="superheroCard"
                   src="assets/images/pokemon_cover_image.png"
@@ -72,9 +84,10 @@
                 />
               </a>
             </div>
+            <!-----Description for the pokemon game----->
             <div id="descriptionFrame" class="content">
+              <!-----Header for the pokemon card----->
               <a class="ui yellow header">Pokemon</a>
-
               <details>
                 <summary>How To Play:</summary>
                 <div>
@@ -103,18 +116,20 @@
                 </div>
                 <div>- See how many Pokemon's you can defeat!!</div>
               </details>
-
             </div>
           </div>
         </div>
       </div>
     </div>
+    <!-----JQuery script with semantic and our scripts underneath----->
     <script
       src="https://code.jquery.com/jquery-3.1.1.min.js"
       integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
       crossorigin="anonymous"
     ></script>
+    <!-----Semantic JavaScript Script----->
     <script src="assets/js/semantic.min.js"></script>
+    <!-----Our App Script----->
     <script src="assets/js/script.js"></script>
   </body>
 </html>
