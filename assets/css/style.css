@@ -1,11 +1,19 @@
 /* body styling */
 body {
-  background-color: #000000;
-  color: #ffffff;
+  background-color: #353131;
+  font-size: 1.2rem;
+  color: #cec9cc;
 }
-/* display class to hide and show elements */
+
+#clickUniverse {
+  margin-bottom: 10px;
+}
+
 .display {
   display: none;
+}
+.header{
+  color: #cec9cc;
 }
 
 /* character card styling */
@@ -14,17 +22,20 @@ body {
   border: 3px solid #f5f5f5;
   background-color: #fffa3d;
 }
-
+.pokeBackground{
+  margin-top: 10px;
+  background-color: #e7e7e7;
+}
 .character1Card {
   padding: 2px;
-  border: 3px solid #00f9ff;
 }
 
 .character2Card {
   padding: 2px;
-  border: 3px solid #ab20fd;
 }
-
+#mainGameScreen{
+  padding: 10px;
+}
 /* powerstat buttons styling */
 .powerstat {
   margin-bottom: 20px;
@@ -33,14 +44,23 @@ body {
 #exitGame {
   margin-top: 10px;
 }
-
+.listElement{
+  margin: 0 auto;
+  display: block;
+  color: #cec9cc;
+  text-align: center;
+}
 /* powerUP logo styling */
 #powerUpLogo {
-  background-color: #000000;
-  color: #3242b6;
+  color: #cec9cc; 
+  padding: 10px;
+  background-color: #908a99;
+  border-bottom: 5px solid #4f43ae;
   font-size: 24px;
 }
-
+summary{
+  cursor: pointer;
+}
 /* Blink effect for PowerUp logo
 /* @group Blink */
 .blink {
