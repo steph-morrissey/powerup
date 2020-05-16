@@ -858,6 +858,3 @@
       autoClick();
       setCanvasSize();
       window.addEventListener("resize", setCanvasSize, false);
-
-
-      
