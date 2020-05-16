@@ -281,6 +281,7 @@
         //Create the start game button
         const startGameButton = $("<button>")
           .addClass("ui olive button startButton")
+          .attr("id", "startButton")
           .text("START GAME");
         //Appends the randomize and start game buttons onto the start div
         startButtonsDiv.append(randomizeButton, startGameButton);
@@ -311,6 +312,7 @@
           .attr({
             "data-intelligence": userPowerStats.intelligence,
             id: "powerstat",
+            style: "margin-bottom: 10px"
           })
           .text("Intelligence");
         //Creates the strength button
@@ -319,6 +321,7 @@
           .attr({ 
               "data-strength": userPowerStats.strength, 
               id: "powerstat",
+              style: "margin-bottom: 10px"
             })
           .text("Strength");
         //Creates the speed button
@@ -327,6 +330,7 @@
           .attr({ 
               "data-speed": userPowerStats.speed, 
               id: "powerstat",
+              style: "margin-bottom: 10px"
             })
           .text("Speed");
         //Creates the durability button
@@ -335,6 +339,7 @@
           .attr({
             "data-durability": userPowerStats.durability,
             id: "powerstat",
+            style: "margin-bottom: 10px"
           })
           .text("Durability");
         //Creates the power button
@@ -374,7 +379,7 @@
         const attackButton = $("<button>")
           .addClass("large ui red button abilityStat")
           //For the data-attack attribute, assign the random attack number
-          .attr({ "data-attack": userAttackAbilityNumber, id: "abilityStat" })
+          .attr({ "data-attack": userAttackAbilityNumber, id: "abilityStat", style: "margin-bottom: 10px" })
           .text("Attack");
         //Creates the defend button
         const defendButton = $("<button>")
@@ -406,14 +411,17 @@
           $(".abilityStat").attr("disabled", true);
           //And give the data to compareStatsWithComputer function
           compareAbilityWithComputer(buttonObjectAttribute);
-        } else {
+        } else if  ($(this).attr("id") === "startButton"){
           //Else, targetting the startButton and set it to disabled
           $(".startButton").attr("disabled", true);
           //Call the random characters from api function
           getRandomCharactersFromApi();
+        } else {
+          //Set the powerstat elements to enabled
+          $(".powerstat").attr("disabled", false);
+          $(".abilityStat").attr("disabled", false);
+          $(".startButton").attr("disabled", false);
         }
-        //Set the powerstat elements to enabled
-        $(".powerstat").attr("disabled", false);
       }
 
       //This function takes in a object to calculate if they won
