@@ -73,6 +73,7 @@
         const characterContent = $("<div>").addClass("content");
         const characterName = $("<div>")
           .addClass("ui yellow header")
+          .attr("style", "margin-top: 10px")
           .text(data.name);
         //Returns the appended card to the upper div
         return characterCardUpperDiv.append(
