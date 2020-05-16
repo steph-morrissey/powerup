@@ -1,3 +1,10 @@
+
+      $(".ui.basic.modal").modal('show')
+
+      $("#body").on("click", modalVisible)
+      function modalVisible(){
+        $(".close-modal").modal('hide')
+      }
       //CORS URL
       const CORS_ANYWHERE_URL = "https://radiant-stream-08604.herokuapp.com/";
 
@@ -52,6 +59,7 @@
         const urlParams = new URLSearchParams(queryString);
         const universe = urlParams.get("universe");
         //2 possible values pokemon or superhero
+        modalFunction(universe)
         return universe;
       }
 
@@ -272,7 +280,7 @@
           .text("RANDOMIZE AGAIN");
         //Create the start game button
         const startGameButton = $("<button>")
-          .addClass("ui olive button")
+          .addClass("ui olive button startButton")
           .text("START GAME");
         //Appends the randomize and start game buttons onto the start div
         startButtonsDiv.append(randomizeButton, startGameButton);
@@ -607,6 +615,32 @@
         };
         //Returns the ajax call options
         return ajaxOptions;
+      }
+
+      function modalFunction(universe){
+        if(universe==="superhero"){
+          $("#howToPlayHeader").text("Superhero Game Rules")
+          const line1 = $("<p>").text("- Click on the image of the SuperHero to get started")
+          const line2 = $("<p>").text("-You will then be presented with two random SuperHeros (yours on the left, and you CPU's on the right)")
+          const line3 = $("<p>").text("- Either \"Randomize Again\" or to \"Start Game\" by clicking one of those buttons")
+          const line4 = $("<p>").text("- When the game has started, you then have to choose carefully which Powerstat you want to use against your opponent.")
+          const line5 = $("<p>").text("- If yours beats their equivalent Powerstat, then you will have defeated that opponent and the CPU's health bar will go down and vice versa.")
+          const line6 = $("<p>").text("- Whichever players health bar reaches 0 first will lose.")
+          const line7 = $("<p>").text("- See how many SuperHeros you can defeat!!")
+          
+          $("#howToPlayContent").append(line1,line2,line3,line4,line5,line6,line6,line7)
+        }else if(universe==="pokemon"){
+          $("#howToPlayHeader").text("Pokemon Game Rules")
+          const line1 = $("<p>").text("- Click on the image of the Pokemon universe to get started")
+          const line2 = $("<p>").text("- You will then be presented with two random Pokemons (yours on the left, and you CPU's on the right)")
+          const line3 = $("<p>").text("- Either \"Randomize Again\" or to \"Start Game\" by clicking one of those buttons")
+          const line4 = $("<p>").text("- When the game has started, you then have to choose carefully whether to attack your opponent or defend against them with your selected ability (which will flash green beneath your Pokemon name).")
+          const line5 = $("<p>").text("- If you are successful in your Attack or Defend, then the CPU's health bar will go down and vice versa.")
+          const line6 = $("<p>").text("- Whichever players health bar reaches 0 first will lose.")
+          const line7 = $("<p>").text("- See how many Pokemon's you can defeat!!")
+          $("#howToPlayContent").append(line1,line2,line3,line4,line5,line6,line6,line7)
+        }
+
       }
 
       //Renders the characters and generates the cards using the API

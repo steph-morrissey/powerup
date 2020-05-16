@@ -15,7 +15,9 @@ body {
 .header{
   color: #cec9cc;
 }
-
+a {
+  color:transparent
+}
 /* character card styling */
 #superheroCard {
   padding: 3px;
@@ -36,6 +38,22 @@ body {
 #mainGameScreen{
   padding: 10px;
 }
+.ui.basic.modal{
+  display: block;
+  margin: 0 auto;
+  padding: 20px;
+  height: 500px;
+  background-color: #4f43ae;
+}
+.screen { 
+  width:200px; 
+  height:200px; 
+  position: fixed; 
+  top: 25%; 
+  left: 25%; 
+  margin-top: -100px; 
+  margin-left: -100px; 
+} 
 /* powerstat buttons styling */
 .powerstat {
   margin-bottom: 20px;

@@ -15,11 +15,13 @@
     <title>Game Screen</title>
   </head>
   <!-----Body of the game screen----->
-  <body>
+  <body id="body">
     <!-----Header, name of the game with a blinking animation----->
     <h1 id="powerUpLogo" class="ui center aligned header">
       <span class="blink">PowerUP!</span>
     </h1>
+    <header>
+    </header>
     <!-----Main Game Screen section where all the cards are----->
     <section id="mainGameScreen">
       <!-----Exit Game Button appended here----->
@@ -58,12 +60,18 @@
           </div>
         </div>
       </div>
+
+      <div id="modelId" class="ui basic modal screen">
+        <div id="howToPlayHeader" class="ui header"></div>
+        <div class="content">
+          <p id="howToPlayContent"></p>
+        </div>
+        </div>
+      </div>
       <!------Animation from anime.js----->
       <canvas class="fireworks"></canvas>
     </section>
-    <script>
-     
-    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
     <!-----Transition Script----->
     <script src="assets/js/transition.min.js"></script>
     <!-----Our App Script----->
