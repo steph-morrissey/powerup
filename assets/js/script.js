@@ -311,7 +311,6 @@
           .attr({
             "data-intelligence": userPowerStats.intelligence,
             id: "powerstat",
-            style: "margin-bottom: 10px"
           })
           .text("Intelligence");
         //Creates the strength button
@@ -320,7 +319,6 @@
           .attr({ 
               "data-strength": userPowerStats.strength, 
               id: "powerstat",
-              style: "margin-bottom: 10px"
             })
           .text("Strength");
         //Creates the speed button
@@ -329,7 +327,6 @@
           .attr({ 
               "data-speed": userPowerStats.speed, 
               id: "powerstat",
-              style: "margin-bottom: 10px" 
             })
           .text("Speed");
         //Creates the durability button
@@ -338,7 +335,6 @@
           .attr({
             "data-durability": userPowerStats.durability,
             id: "powerstat",
-            style: "margin-bottom: 10px"
           })
           .text("Durability");
         //Creates the power button
@@ -399,15 +395,15 @@
         //buttonObjectAttribute is the data object
         const buttonObjectAttribute = $(this).data();
         //If the button clicked id is equal to powerstat
-        if ($(this).attr("id") == "powerstat") {
+        if ($(this).attr("id") === "powerstat") {
           //Set it's attribute to disabled to prevent multiple clicks
           $(".powerstat").attr("disabled", true);
           //And give the data to compareStatsWithComputer function
           compareStatsWithComputer(buttonObjectAttribute);
         //Else if the id is equal to abilityStat
-        } else if ($(this).attr("id") == "abilityStat") {
+        } else if ($(this).attr("id") === "abilityStat") {
           //Set it's attribute to disabled to prevent multiple clicks
-          $(".powerstat").attr("disabled", true);
+          $(".abilityStat").attr("disabled", true);
           //And give the data to compareStatsWithComputer function
           compareAbilityWithComputer(buttonObjectAttribute);
         } else {
@@ -567,7 +563,7 @@
         //Puts in the string cpuHealth and the cpuCounter. cpuHealth is the same name for the
         //key in localStorage to assign it to the opponent
         playerHealth("cpuHealth", userCounter);
-        if (computerCounter == 4) {
+        if (computerCounter === 4) {
           $("#mainGameScreen").addClass("display");
           $("#finalScore").removeClass("display");
         }
@@ -619,7 +615,7 @@
 
       function modalFunction(universe){
         if(universe==="superhero"){
-          $("#howToPlayHeader").text("Superhero Game Rules")
+          $("#howToPlayHeader").text("Superhero Game Rules").attr("style", "text-align: center")
           const line1 = $("<p>").text("- Click on the image of the SuperHero to get started")
           const line2 = $("<p>").text("-You will then be presented with two random SuperHeros (yours on the left, and you CPU's on the right)")
           const line3 = $("<p>").text("- Either \"Randomize Again\" or to \"Start Game\" by clicking one of those buttons")
@@ -701,10 +697,9 @@
           const ulElement = $("<div>").addClass("ui relaxed divided list")
           const itemDiv = $("<div>").addClass("item")
           const contentDiv = $("<div>").addClass("content")
-          let listElement = $("<p>").text("").addClass("ui medium header listElement")
-            
+                      
           scoresFromLocalStorage.forEach(function(index){
-            listElement.text(index)
+            let listElement = $("<p>").text(index).addClass("ui medium header listElement")
             $("#finalScore").append(ulElement.append(itemDiv.append(contentDiv.append(listElement))));
           })   
         }     
@@ -864,8 +859,5 @@
       setCanvasSize();
       window.addEventListener("resize", setCanvasSize, false);
 
-      if (userPlayerHealth === 0) {
-        $("#display").removeClass("display");
-      }
 
       
